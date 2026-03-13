@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lendo - Toomics Clone</title>
+    <style>
+        :root { --bg: #050505; --primary: #ff1212; }
+        body { background: var(--bg); margin: 0; padding: 0; font-family: sans-serif; }
+        
+        /* Layout do Leitor */
+        #reader-container { display: flex; flex-direction: column; width: 100%; max-width: 800px; margin: 0 auto; }
+        #reader-container img { width: 100%; height: auto; display: block; margin: 0; padding: 0; }
+
+        /* Controles flutuantes */
+        .controls { position: fixed; bottom: 20px; right: 20px; display: flex; gap: 10px; opacity: 0.5; transition: 0.3s; }
+        .controls:hover { opacity: 1; }
+        .btn { background: var(--primary); color: white; border: none; padding: 12px 20px; border-radius: 50px; font-weight: bold; cursor: pointer; }
+        
+        .loading { color: white; text-align: center; padding: 50px; }
+    </style>
+</head>
+<body>
+
+    <div id="reader-container">
+        <div class="loading">Preparando páginas...</div>
+    </div>
+
+    <div class="controls">
+        <button class="btn" onclick="window.history.back()">Voltar</button>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const chapterId = urlParams.get('id');
+
+        async function loadChapter() {
+            if(!chapterId) return;
+            const container = document.getElementById('reader-container');
+
+            try {
+                // 1. Pegar o host e as imagens do capítulo
+                const resp = await fetch(`https://api.mangadex.org/at-home/server/${chapterId}`);
+                const data = await resp.json();
+                const hash = data.chapter.hash;
+                const files = data.chapter.data; // Imagens de alta qualidade
+                const baseUrl = data.baseUrl;
+
+                container.innerHTML = ""; // Limpa o loading
+
+                // 2. Montar cada imagem na tela
+                files.forEach(fileName => {
+                    const img = document.createElement('img');
+                    img.src = `${baseUrl}/data/${hash}/${fileName}`;
+                    img.loading = "lazy"; // Melhora a performance
+                    container.appendChild(img);
+                });
+            } catch (err) {
+                container.innerHTML = "<div class='loading'>Erro ao carregar páginas. Tente novamente.</div>";
+            }
+        }
+        loadChapter();
+    </script>
+</body>
+</html>
