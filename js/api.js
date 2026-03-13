@@ -3,14 +3,17 @@ const UPLOADS_URL = 'https://uploads.mangadex.org';
 
 async function getMangaList(title = "") {
     try {
-        const query = title ? `&title=${encodeURIComponent(title)}` : "";
-        // Inclui todos os ratings para garantir que o conteúdo 18+ apareça
+        // Se não tiver título, ele busca os mais populares por ordem de seguidores
+        const searchParams = title 
+            ? `&title=${encodeURIComponent(title)}` 
+            : "&order[followedCount]=desc";
+
         const ratings = "&contentRating[]=safe&contentRating[]=suggestive&contentRating[]=erotica&contentRating[]=pornographic";
         
-        const response = await fetch(`${BASE_URL}/manga?limit=24&includes[]=cover_art${query}${ratings}`);
+        const response = await fetch(`${BASE_URL}/manga?limit=24&includes[]=cover_art${searchParams}${ratings}`);
         const data = await response.json();
         
-        if (!data.data) return [];
+        if (!data.data || data.data.length === 0) return [];
 
         return data.data.map(manga => {
             const coverRel = manga.relationships.find(r => r.type === 'cover_art');
