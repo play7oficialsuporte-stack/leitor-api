@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Manga Test Ads</title>
+    <style>
+        body { background: #121212; color: white; font-family: sans-serif; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; padding: 20px; }
+        .manga-card { border: 1px solid #333; padding: 10px; text-align: center; }
+        .manga-card img { width: 100%; border-radius: 5px; }
+        .ad-space { background: #222; margin: 10px 0; text-align: center; padding: 10px; border: 1px dashed #555; }
+    </style>
+</head>
+<body>
+
+    <div class="ad-space">
+        <p style="color: #666;">Espaço para Anúncio 728x90</p>
+    </div>
+
+    <h1>Mangás Recentes</h1>
+    <div id="lista-manga" class="grid">Carregando...</div>
+
+    <div class="ad-space">
+        <p style="color: #666;">Espaço para Anúncio Pop-under/Native</p>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script>
+        // Chama a função que criamos no api.js e mostra na tela
+        async function renderHome() {
+            const mangas = await getMangaList();
+            const container = document.getElementById('lista-manga');
+            container.innerHTML = mangas.map(m => `
+                <div class="manga-card">
+                    <img src="${m.coverUrl}" alt="${m.title}">
+                    <h4>${m.title}</h4>
+                </div>
+            `).join('');
+        }
+        renderHome();
+    </script>
+</body>
+</html>
