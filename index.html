@@ -6,62 +6,135 @@
     <title>MangaCloud - Toom Style</title>
     <style>
         :root { --primary: #ff1212; --bg: #0b0b0b; --card-bg: #1a1a1a; }
-        body { background: var(--bg); color: white; font-family: sans-serif; margin: 0; }
-        header { padding: 15px; background: #000; border-bottom: 2px solid var(--primary); display: flex; flex-direction: column; gap: 10px; position: sticky; top: 0; z-index: 100; }
-        .header-top { display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-weight: bold; color: var(--primary); font-size: 1.5rem; }
+        body { background: var(--bg); color: white; font-family: 'Segoe UI', Roboto, sans-serif; margin: 0; }
         
-        .search-box { width: 100%; display: flex; gap: 5px; }
-        .search-box input { flex: 1; padding: 10px; border-radius: 5px; border: none; background: #222; color: white; }
-        .search-box button { padding: 10px; background: var(--primary); border: none; color: white; border-radius: 5px; font-weight: bold; }
+        /* Header Estilo Toomics */
+        header { 
+            padding: 15px; 
+            background: #000; 
+            border-bottom: 2px solid var(--primary); 
+            display: flex; 
+            flex-direction: column; 
+            gap: 12px; 
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+        }
+        .header-top { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-weight: bold; color: var(--primary); font-size: 1.5rem; letter-spacing: -1px; }
+        
+        /* Barra de Busca */
+        .search-box { width: 100%; display: flex; gap: 8px; }
+        .search-box input { 
+            flex: 1; padding: 12px; border-radius: 6px; border: 1px solid #333; 
+            background: #151515; color: white; outline: none;
+        }
+        .search-box button { 
+            padding: 0 15px; background: var(--primary); border: none; 
+            color: white; border-radius: 6px; font-weight: bold; cursor: pointer;
+        }
 
         .container { padding: 15px; }
-        .section-title { font-size: 1.2rem; margin-bottom: 15px; border-left: 4px solid var(--primary); padding-left: 10px; }
-        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
         
-        .manga-card { background: var(--card-bg); border-radius: 8px; overflow: hidden; cursor: pointer; }
+        /* Título com Borda Lateral conforme solicitado */
+        .section-title { 
+            font-size: 1.3rem; 
+            margin: 10px 0 20px 0; 
+            border-left: 5px solid var(--primary); 
+            padding-left: 12px; 
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        /* Grid de Mangás */
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 12px; 
+        }
+        
+        .manga-card { 
+            background: var(--card-bg); 
+            border-radius: 10px; 
+            overflow: hidden; 
+            cursor: pointer; 
+            transition: transform 0.2s;
+            border: 1px solid #222;
+        }
+        .manga-card:active { transform: scale(0.95); }
         .manga-card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; display: block; }
-        .manga-info { padding: 8px; font-size: 0.75rem; text-align: center; }
-        .manga-info h4 { margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        
+        .manga-info { padding: 10px; font-size: 0.8rem; text-align: center; background: #1a1a1a; }
+        .manga-info h4 { 
+            margin: 0; 
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+            color: #efefef;
+        }
+
+        .status-msg { grid-column: 1/-1; text-align: center; padding: 40px; color: #666; font-size: 0.9rem; }
     </style>
 </head>
 <body>
+
     <header>
-        <div class="header-top"><div class="logo">TOOM-CLONE</div></div>
+        <div class="header-top">
+            <div class="logo">TOOM-CLONE</div>
+        </div>
         <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Buscar mangá...">
+            <input type="text" id="searchInput" placeholder="Buscar mangás 18+ ou normais...">
             <button onclick="buscar()">🔍</button>
         </div>
     </header>
 
     <div class="container">
         <h2 id="titulo-home" class="section-title">Populares hoje</h2>
-        <div id="lista-manga" class="grid">Carregando catálogo...</div>
+        <div id="lista-manga" class="grid">
+            <div class="status-msg">Iniciando conexão...</div>
+        </div>
     </div>
 
     <script src="js/api.js"></script>
     <script>
         async function carregarManga(termo = "") {
             const container = document.getElementById('lista-manga');
-            container.innerHTML = "Carregando...";
-            const mangas = await getMangaList(termo);
+            container.innerHTML = "<div class='status-msg'>Aguardando resposta da API...</div>";
             
-            container.innerHTML = mangas.map(m => `
-                <div class="manga-card" onclick="location.href='manga.html?id=${m.id}'">
-                    <img src="${m.coverUrl}" alt="${m.title}">
-                    <div class="manga-info"><h4>${m.title}</h4></div>
-                </div>
-            `).join('');
+            try {
+                // Chama a função global do seu api.js
+                const mangas = await getMangaList(termo);
+
+                if (!mangas || mangas.length === 0) {
+                    container.innerHTML = "<div class='status-msg'>Nenhum mangá encontrado.<br>Tente outro nome ou mude o filtro no api.js</div>";
+                    return;
+                }
+                
+                container.innerHTML = mangas.map(m => `
+                    <div class="manga-card" onclick="location.href='manga.html?id=${m.id}'">
+                        <img src="${m.coverUrl}" alt="${m.title}" onerror="this.src='https://via.placeholder.com/256x380?text=Sem+Capa'">
+                        <div class="manga-info">
+                            <h4>${m.title}</h4>
+                        </div>
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                console.error("Erro fatal:", error);
+                container.innerHTML = "<div class='status-msg' style='color:red;'>Erro ao carregar catálogo.<br>Verifique se o arquivo js/api.js está correto.</div>";
+            }
         }
 
         function buscar() {
             const termo = document.getElementById('searchInput').value;
-            document.getElementById('titulo-home').innerText = termo ? `Resultados para: ${termo}` : "Populares hoje";
+            document.getElementById('titulo-home').innerText = termo ? `Resultados: ${termo}` : "Populares hoje";
             carregarManga(termo);
         }
 
-        // Carrega os populares ao iniciar
-        carregarManga();
+        // Executa ao abrir a página
+        window.onload = () => {
+            carregarManga();
+        };
     </script>
 </body>
 </html>
