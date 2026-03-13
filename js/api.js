@@ -4,8 +4,8 @@ const UPLOADS_URL = 'https://uploads.mangadex.org';
 async function getMangaList(title = "") {
     try {
         const query = title ? `&title=${title}` : "";
-        // O parâmetro includes[]=cover_art é vital para as fotos aparecerem
-        const response = await fetch(`${BASE_URL}/manga?limit=24&includes[]=cover_art${query}&contentRating[]=safe&contentRating[]=suggestive`);
+        // Adicionados: erotica e pornographic para liberar conteúdo 18+
+        const response = await fetch(`${BASE_URL}/manga?limit=24&includes[]=cover_art${query}&contentRating[]=safe&contentRating[]=suggestive&contentRating[]=erotica&contentRating[]=pornographic`);
         const data = await response.json();
         
         return data.data.map(manga => {
@@ -24,7 +24,8 @@ async function getMangaList(title = "") {
 
 async function getMangaChapters(mangaId) {
     try {
-        const response = await fetch(`${BASE_URL}/manga/${mangaId}/feed?translatedLanguage[]=pt-br&order[chapter]=desc&limit=100&contentRating[]=safe&contentRating[]=suggestive&contentRating[]=erotica`);
+        // Garantindo que os capítulos também liberem conteúdos adultos no feed
+        const response = await fetch(`${BASE_URL}/manga/${mangaId}/feed?translatedLanguage[]=pt-br&order[chapter]=desc&limit=100&contentRating[]=safe&contentRating[]=suggestive&contentRating[]=erotica&contentRating[]=pornographic`);
         const data = await response.json();
         return data.data;
     } catch (err) {
