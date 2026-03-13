@@ -2,38 +2,46 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Manga Test Ads</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MangaCloud - Estilo Toomics</title>
     <style>
-        body { background: #121212; color: white; font-family: sans-serif; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; padding: 20px; }
-        .manga-card { border: 1px solid #333; padding: 10px; text-align: center; }
-        .manga-card img { width: 100%; border-radius: 5px; }
-        .ad-space { background: #222; margin: 10px 0; text-align: center; padding: 10px; border: 1px dashed #555; }
+        :root { --primary: #ff1212; --bg: #0b0b0b; --card-bg: #1a1a1a; }
+        body { background: var(--bg); color: white; font-family: 'Segoe UI', Roboto, sans-serif; margin: 0; }
+        header { padding: 15px; background: #000; border-bottom: 2px solid var(--primary); display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-weight: bold; color: var(--primary); font-size: 1.5rem; }
+        
+        /* Grid estilo Toomics */
+        .container { padding: 15px; }
+        .section-title { font-size: 1.2rem; margin-bottom: 15px; border-left: 4px solid var(--primary); padding-left: 10px; }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        
+        .manga-card { background: var(--card-bg); border-radius: 8px; overflow: hidden; transition: 0.3s; position: relative; }
+        .manga-card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; display: block; }
+        .manga-info { padding: 8px; font-size: 0.8rem; height: 40px; overflow: hidden; }
+        .manga-info h4 { margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     </style>
 </head>
 <body>
+    <header><div class="logo">TOOM-CLONE</div></header>
 
-    <div class="ad-space">
-        <p style="color: #666;">Espaço para Anúncio 728x90</p>
-    </div>
-
-    <h1>Mangás Recentes</h1>
-    <div id="lista-manga" class="grid">Carregando...</div>
-
-    <div class="ad-space">
-        <p style="color: #666;">Espaço para Anúncio Pop-under/Native</p>
+    <div class="container">
+        <h2 class="section-title">Populares hoje</h2>
+        <div id="lista-manga" class="grid"></div>
     </div>
 
     <script src="js/api.js"></script>
     <script>
-        // Chama a função que criamos no api.js e mostra na tela
         async function renderHome() {
-            const mangas = await getMangaList();
             const container = document.getElementById('lista-manga');
+            container.innerHTML = "<p>Carregando catálogo...</p>";
+            const mangas = await getMangaList(); // Chama sua função da MangaDex
+            
             container.innerHTML = mangas.map(m => `
-                <div class="manga-card">
+                <div class="manga-card" onclick="location.href='manga.html?id=${m.id}'">
                     <img src="${m.coverUrl}" alt="${m.title}">
-                    <h4>${m.title}</h4>
+                    <div class="manga-info">
+                        <h4>${m.title}</h4>
+                    </div>
                 </div>
             `).join('');
         }
