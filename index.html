@@ -3,49 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MangaCloud - Estilo Toomics</title>
+    <title>MangaCloud - Toom Style</title>
     <style>
         :root { --primary: #ff1212; --bg: #0b0b0b; --card-bg: #1a1a1a; }
-        body { background: var(--bg); color: white; font-family: 'Segoe UI', Roboto, sans-serif; margin: 0; }
-        header { padding: 15px; background: #000; border-bottom: 2px solid var(--primary); display: flex; justify-content: space-between; align-items: center; }
+        body { background: var(--bg); color: white; font-family: sans-serif; margin: 0; }
+        header { padding: 15px; background: #000; border-bottom: 2px solid var(--primary); display: flex; flex-direction: column; gap: 10px; position: sticky; top: 0; z-index: 100; }
+        .header-top { display: flex; justify-content: space-between; align-items: center; }
         .logo { font-weight: bold; color: var(--primary); font-size: 1.5rem; }
         
-        /* Grid estilo Toomics */
+        .search-box { width: 100%; display: flex; gap: 5px; }
+        .search-box input { flex: 1; padding: 10px; border-radius: 5px; border: none; background: #222; color: white; }
+        .search-box button { padding: 10px; background: var(--primary); border: none; color: white; border-radius: 5px; font-weight: bold; }
+
         .container { padding: 15px; }
         .section-title { font-size: 1.2rem; margin-bottom: 15px; border-left: 4px solid var(--primary); padding-left: 10px; }
         .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
         
-        .manga-card { background: var(--card-bg); border-radius: 8px; overflow: hidden; transition: 0.3s; position: relative; }
+        .manga-card { background: var(--card-bg); border-radius: 8px; overflow: hidden; cursor: pointer; }
         .manga-card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; display: block; }
-        .manga-info { padding: 8px; font-size: 0.8rem; height: 40px; overflow: hidden; }
+        .manga-info { padding: 8px; font-size: 0.75rem; text-align: center; }
         .manga-info h4 { margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     </style>
 </head>
 <body>
-    <header><div class="logo">TOOM-CLONE</div></header>
+    <header>
+        <div class="header-top"><div class="logo">TOOM-CLONE</div></div>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Buscar mangá...">
+            <button onclick="buscar()">🔍</button>
+        </div>
+    </header>
 
     <div class="container">
-        <h2 class="section-title">Populares hoje</h2>
-        <div id="lista-manga" class="grid"></div>
+        <h2 id="titulo-home" class="section-title">Populares hoje</h2>
+        <div id="lista-manga" class="grid">Carregando catálogo...</div>
     </div>
 
     <script src="js/api.js"></script>
     <script>
-        async function renderHome() {
+        async function carregarManga(termo = "") {
             const container = document.getElementById('lista-manga');
-            container.innerHTML = "<p>Carregando catálogo...</p>";
-            const mangas = await getMangaList(); // Chama sua função da MangaDex
+            container.innerHTML = "Carregando...";
+            const mangas = await getMangaList(termo);
             
             container.innerHTML = mangas.map(m => `
                 <div class="manga-card" onclick="location.href='manga.html?id=${m.id}'">
                     <img src="${m.coverUrl}" alt="${m.title}">
-                    <div class="manga-info">
-                        <h4>${m.title}</h4>
-                    </div>
+                    <div class="manga-info"><h4>${m.title}</h4></div>
                 </div>
             `).join('');
         }
-        renderHome();
+
+        function buscar() {
+            const termo = document.getElementById('searchInput').value;
+            document.getElementById('titulo-home').innerText = termo ? `Resultados para: ${termo}` : "Populares hoje";
+            carregarManga(termo);
+        }
+
+        // Carrega os populares ao iniciar
+        carregarManga();
     </script>
 </body>
 </html>
