@@ -6,40 +6,72 @@
     <title>Detalhes - MangaCloud</title>
     <style>
         :root { --primary: #ff1212; --bg: #0b0b0b; --card-bg: #1a1a1a; }
-        body { background: var(--bg); color: white; font-family: sans-serif; margin: 0; }
+        body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 50px; }
         
-        /* O CSS que você enviou, integrado */
-        .banner-manga { width: 100%; height: 300px; background-size: cover; background-position: center; position: relative; }
-        .overlay { background: linear-gradient(0deg, var(--bg) 10%, transparent 100%); height: 100%; width: 100%; display: flex; align-items: flex-end; padding: 20px; box-sizing: border-box; }
+        /* Banner e Overlay Estilo Toomics */
+        .banner-manga { width: 100%; height: 350px; background-size: cover; background-position: center; position: relative; }
+        .overlay { 
+            background: linear-gradient(0deg, var(--bg) 15%, transparent 100%); 
+            height: 100%; width: 100%; 
+            display: flex; align-items: flex-end; 
+            padding: 20px; box-sizing: border-box; 
+        }
         
-        .manga-header-info { z-index: 2; }
-        .cap-list { list-style: none; padding: 0; margin-top: 20px; }
-        .cap-item { display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #222; text-decoration: none; color: #ccc; transition: 0.2s; }
-        .cap-item:hover { background: #151515; }
-        .cap-number { background: var(--primary); color: white; padding: 6px 10px; border-radius: 4px; margin-right: 15px; font-weight: bold; font-size: 0.9rem; }
+        .manga-header-info { z-index: 2; width: 100%; }
+        .manga-header-info h1 { margin: 0; font-size: 1.8rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
+
+        /* Lista de Capítulos */
+        .cap-list { list-style: none; padding: 0; margin: 0; }
+        .cap-item { 
+            display: flex; align-items: center; 
+            padding: 15px; border-bottom: 1px solid #222; 
+            text-decoration: none; color: #ccc; 
+            transition: background 0.2s; 
+        }
+        .cap-item:active { background: #1a1a1a; }
         
-        .voltar-btn { position: absolute; top: 20px; left: 20px; background: rgba(0,0,0,0.6); color: white; border: none; padding: 8px 15px; border-radius: 20px; cursor: pointer; z-index: 10; }
-        .description { padding: 20px; font-size: 0.9rem; color: #aaa; line-height: 1.4; }
+        .cap-number { 
+            background: var(--primary); color: white; 
+            padding: 6px 12px; border-radius: 4px; 
+            margin-right: 15px; font-weight: bold; font-size: 0.85rem; 
+        }
+        
+        /* UI Elements */
+        .voltar-btn { 
+            position: absolute; top: 20px; left: 20px; 
+            background: rgba(0,0,0,0.7); color: white; 
+            border: 1px solid #444; padding: 10px 18px; 
+            border-radius: 25px; cursor: pointer; z-index: 10; 
+            font-weight: bold;
+        }
+        .description { 
+            padding: 20px; font-size: 0.95rem; color: #bbb; 
+            line-height: 1.5; text-align: justify;
+        }
+        .section-label { 
+            padding: 10px 20px; font-weight: bold; 
+            border-left: 5px solid var(--primary); 
+            margin: 20px 0 10px 0; background: #111;
+        }
     </style>
 </head>
 <body>
 
-    <button class="voltar-btn" onclick="window.history.back()">← Voltar</button>
+    <button class="voltar-btn" onclick="window.history.back()">← VOLTAR</button>
 
     <div id="manga-banner" class="banner-manga">
         <div class="overlay">
             <div class="manga-header-info">
-                <h1 id="manga-titulo" style="margin: 0;">Carregando...</h1>
+                <h1 id="manga-titulo">Carregando...</h1>
             </div>
         </div>
     </div>
 
-    <div id="manga-descricao" class="description"></div>
+    <div class="section-label">SINOPSE</div>
+    <div id="manga-descricao" class="description">Buscando informações do mangá...</div>
 
-    <div style="padding: 0 20px;">
-        <h3 style="border-left: 4px solid var(--primary); padding-left: 10px;">Episódios</h3>
-        <div id="lista-capitulos" class="cap-list"></div>
-    </div>
+    <div class="section-label">EPISÓDIOS</div>
+    <div id="lista-capitulos" class="cap-list"></div>
 
     <script src="js/api.js"></script>
     <script>
@@ -49,35 +81,45 @@
         async function carregarPaginaManga() {
             if(!mangaId) return;
 
-            // 1. Buscar detalhes do mangá (para título e banner)
-            const respManga = await fetch(`https://api.mangadex.org/manga/${mangaId}?includes[]=cover_art`);
-            const mangaData = await respManga.json();
-            const info = mangaData.data;
-            
-            // Título e Descrição
-            document.getElementById('manga-titulo').innerText = info.attributes.title.en || info.attributes.title.ja_ro;
-            document.getElementById('manga-descricao').innerText = info.attributes.description.en || "Sem descrição disponível.";
+            try {
+                // 1. Detalhes do Mangá
+                const respManga = await fetch(`https://api.mangadex.org/manga/${mangaId}?includes[]=cover_art`);
+                const mangaData = await respManga.json();
+                const info = mangaData.data;
+                
+                // Título e Descrição
+                document.getElementById('manga-titulo').innerText = info.attributes.title.en || info.attributes.title.ja_ro || "Título Indisponível";
+                const desc = info.attributes.description.en || info.attributes.description.pt || "Sem descrição disponível neste idioma.";
+                document.getElementById('manga-descricao').innerText = desc.split('---')[0]; // Limpa textos extras da MD
 
-            // Banner (Usando a capa como fundo)
-            const coverObj = info.relationships.find(r => r.type === 'cover_art');
-            const coverFile = coverObj.attributes.fileName;
-            document.getElementById('manga-banner').style.backgroundImage = `url(https://uploads.mangadex.org/covers/${mangaId}/${coverFile})`;
+                // Banner Dinâmico
+                const coverObj = info.relationships.find(r => r.type === 'cover_art');
+                if (coverObj) {
+                    const coverFile = coverObj.attributes.fileName;
+                    document.getElementById('manga-banner').style.backgroundImage = `url(https://uploads.mangadex.org/covers/${mangaId}/${coverFile})`;
+                }
 
-            // 2. Buscar Capítulos
-            const caps = await getMangaChapters(mangaId);
-            const container = document.getElementById('lista-capitulos');
-            
-            if(caps.length === 0) {
-                container.innerHTML = "<p style='padding:20px'>Nenhum capítulo em PT-BR.</p>";
-                return;
+                // 2. Capítulos
+                const caps = await getMangaChapters(mangaId);
+                const container = document.getElementById('lista-capitulos');
+                
+                if(!caps || caps.length === 0) {
+                    container.innerHTML = "<p style='padding:20px; color:#666;'>Nenhum capítulo em Português encontrado.</p>";
+                    return;
+                }
+
+                // Renderiza a lista apontando para LEIA.HTML
+                container.innerHTML = caps.map(c => `
+                    <a class="cap-item" href="leia.html?id=${c.id}">
+                        <span class="cap-number">CAP ${c.attributes.chapter}</span>
+                        <span>${c.attributes.title || 'Ler este capítulo'}</span>
+                    </a>
+                `).join('');
+
+            } catch (error) {
+                console.error("Erro:", error);
+                document.getElementById('manga-titulo').innerText = "Erro ao carregar.";
             }
-
-            container.innerHTML = caps.map(c => `
-                <a class="cap-item" href="read.html?id=${c.id}">
-                    <span class="cap-number">CAP ${c.attributes.chapter}</span>
-                    <span>${c.attributes.title || 'Ler capítulo'}</span>
-                </a>
-            `).join('');
         }
         carregarPaginaManga();
     </script>
