@@ -4,45 +4,70 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="referrer" content="no-referrer">
-    <title>TOOM-CLONE | Home</title>
+    <title>Mangakai | Home</title>
     <style>
-        :root { --primary: #ff1212; --bg: #0b0b0b; --card-bg: #1a1a1a; }
-        body { background: var(--bg); color: white; font-family: sans-serif; margin: 0; padding-bottom: 50px; }
-        header { padding: 20px; background: #000; border-bottom: 2px solid var(--primary); text-align: center; }
-        .logo { font-weight: bold; color: var(--primary); font-size: 1.8rem; text-transform: uppercase; letter-spacing: 2px; }
+        :root { --primary: #ff1212; --bg: #ffffff; --text: #000000; }
+        body { background: var(--bg); color: var(--text); font-family: 'Helvetica', sans-serif; margin: 0; padding-bottom: 60px; }
         
-        .container { padding: 15px; }
-        .section-label { padding-left: 12px; border-left: 5px solid var(--primary); font-weight: bold; text-transform: uppercase; margin: 20px 0; }
-        
-        /* Grid de Mangás */
+        /* Header Estilo Toomics */
+        header { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; border-bottom: 1px solid #eee; position: sticky; top: 0; background: white; z-index: 100; }
+        .logo { color: var(--primary); font-weight: 900; font-size: 1.5rem; text-transform: uppercase; }
+        .menu-icons { display: flex; gap: 15px; font-size: 1.2rem; }
+
+        /* Navegação Superior */
+        .nav-tabs { display: flex; overflow-x: auto; padding: 10px 15px; gap: 20px; border-bottom: 1px solid #eee; white-space: nowrap; }
+        .nav-tabs a { text-decoration: none; color: #666; font-weight: bold; font-size: 0.9rem; }
+        .nav-tabs a.active { color: var(--primary); border-bottom: 2px solid var(--primary); padding-bottom: 5px; }
+
+        /* Banner Carrossel (Placeholder para 5 itens) */
+        .carousel { width: 100%; height: 250px; background: #333; position: relative; overflow: hidden; }
+        .carousel-item { width: 100%; height: 100%; background-size: cover; background-position: center; display: flex; align-items: flex-end; padding: 20px; color: white; background-image: url('https://uploads.mangadex.org/covers/4393fd4e-d646-4bab-9c95-786168ccb618/3199fa66-3a73-4c11-9236-9cba765e6650.jpg'); }
+        .carousel-info h2 { margin: 0; font-size: 1.4rem; }
+
+        /* Seções de Conteúdo */
+        .section { padding: 20px 15px; }
+        .section-title { font-weight: 900; font-size: 1.1rem; margin-bottom: 15px; display: flex; align-items: center; }
+        .section-title span { color: #ccc; margin-right: 10px; font-size: 1.5rem; }
+
         .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .manga-card { background: var(--card-bg); border-radius: 8px; overflow: hidden; text-decoration: none; color: white; border: 1px solid #222; }
-        .manga-card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; display: block; }
-        .manga-info { padding: 8px; font-size: 0.75rem; text-align: center; font-weight: bold; }
+        .manga-card { text-decoration: none; color: var(--text); }
+        .manga-card img { width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: 4px; }
+        .manga-card p { margin: 5px 0; font-size: 0.8rem; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     </style>
 </head>
 <body>
 
-    <header><div class="logo">TOOM-CLONE</div></header>
+    <header>
+        <div class="logo">Mangakai</div>
+        <div class="menu-icons">🔍 ☰</div>
+    </header>
 
-    <div class="container">
-        <div class="section-label">Populares Hoje</div>
-        
+    <nav class="nav-tabs">
+        <a href="#" class="active">Home</a>
+        <a href="#">Gêneros</a>
+        <a href="#">Séries</a>
+        <a href="#">Novos</a>
+        <a href="#">18+</a>
+    </nav>
+
+    <div class="carousel">
+        <div class="carousel-item">
+            <div class="carousel-info">
+                <h2>Devilman</h2>
+                <p>O retorno dos demônios.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title"><span>1</span> TOP 10 do Dia</div>
         <div class="grid">
             <a href="devilman.html" class="manga-card">
                 <img src="https://uploads.mangadex.org/covers/4393fd4e-d646-4bab-9c95-786168ccb618/3199fa66-3a73-4c11-9236-9cba765e6650.jpg.256.jpg">
-                <div class="manga-info">devilman</div>
+                <p>Devilman</p>
             </a>
-
-            <div class="manga-card" style="opacity: 0.4;">
-                <img src="https://via.placeholder.com/256x384/111/333?text=?">
-                <div class="manga-info">Em breve</div>
-            </div>
-
-            <div class="manga-card" style="opacity: 0.4;">
-                <img src="https://via.placeholder.com/256x384/111/333?text=?">
-                <div class="manga-info">Em breve</div>
-            </div>
+            <div class="manga-card"><img src="https://via.placeholder.com/200x300"><p>Em breve</p></div>
+            <div class="manga-card"><img src="https://via.placeholder.com/200x300"><p>Em breve</p></div>
         </div>
     </div>
 
