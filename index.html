@@ -8,51 +8,41 @@
         :root { --primary: #ff1212; --bg: #ffffff; }
         body { background: var(--bg); font-family: 'Helvetica', sans-serif; margin: 0; padding-bottom: 50px; }
         header { padding: 15px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
-        .logo { color: var(--primary); font-weight: 900; font-size: 1.5rem; }
+        .logo { color: var(--primary); font-weight: 900; font-size: 1.5rem; text-decoration: none; }
         
-        /* Banner Destaque */
-        .main-banner { width: 100%; height: 300px; background: #000; position: relative; overflow: hidden; }
-        .banner-img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; }
-        .banner-info { position: absolute; bottom: 20px; left: 20px; color: white; }
-        
-        /* Ranking Toomics */
         .section { padding: 20px; }
-        .rank-card { display: flex; align-items: center; text-decoration: none; color: #000; margin-bottom: 15px; }
-        .rank-number { font-size: 3rem; font-weight: 900; font-style: italic; color: #f0f0f0; margin-right: 15px; }
-        .rank-thumb { width: 80px; height: 110px; border-radius: 4px; object-fit: cover; }
+        .section-title { font-weight: 800; font-size: 1.2rem; text-transform: uppercase; border-left: 4px solid var(--primary); padding-left: 10px; margin-bottom: 20px; }
+        
+        /* Estilo Ranking Toomics */
+        .rank-card { display: flex; align-items: center; text-decoration: none; color: #000; margin-bottom: 15px; position: relative; }
+        .rank-number { font-size: 3.5rem; font-weight: 900; font-style: italic; color: #f0f0f0; margin-right: 10px; line-height: 1; }
+        .rank-thumb { width: 80px; height: 110px; border-radius: 4px; object-fit: cover; z-index: 1; box-shadow: 2px 2px 10px rgba(0,0,0,0.1); }
         .rank-details { margin-left: 15px; }
         .manga-title { font-weight: bold; font-size: 1.1rem; margin: 0; }
+        .manga-cap { color: #999; font-size: 0.85rem; margin-top: 5px; display: block; }
+        .tag-novo { background: var(--primary); color: white; font-size: 0.6rem; padding: 2px 5px; border-radius: 3px; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo">MANGAKAI</div>
-    <div>🔍</div>
+    <a href="index.html" class="logo">MANGAKAI</a>
+    <div style="font-size: 1.2rem;">🔍</div>
 </header>
 
-<div class="main-banner">
-    <a href="leitor.html?manga=Jujutsu Kaisen&cap=Cap01&img=completo.jpg">
-        <img src="https://images.tcdn.com.br/img/img_prod/1129845/manga_jujutsu_kaisen_batalha_de_feiticeiros_vol_01_13075_1_092040b3c200676449171e724036e4f3.jpg" class="banner-img">
-        <div class="banner-info">
-            <span style="background:red; padding:2px 5px; font-size:0.7rem;">NOVO</span>
-            <h2>Jujutsu Kaisen</h2>
-            <p>Capítulo 01 disponível!</p>
-        </div>
-    </a>
-</div>
-
 <div class="section">
-    <h3 style="text-transform:uppercase;">Top 10 do Dia</h3>
+    <h3 class="section-title">Top 10 do Dia</h3>
     
-    <a href="leitor.html?manga=Jujutsu Kaisen&cap=Cap01&img=completo.jpg" class="rank-card">
+    <a href="leitor.html?manga=Jujutsu Kaisen&cap=Cap01&img=completo.jpg.webp" class="rank-card">
         <span class="rank-number">1</span>
         <img src="https://images.tcdn.com.br/img/img_prod/1129845/manga_jujutsu_kaisen_batalha_de_feiticeiros_vol_01_13075_1_092040b3c200676449171e724036e4f3.jpg" class="rank-thumb">
         <div class="rank-details">
+            <span class="tag-novo">NOVO</span>
             <p class="manga-title">Jujutsu Kaisen</p>
-            <small style="color:#999;">Ação, Sobrenatural</small>
+            <span class="manga-cap">Capítulo 01 • Dublado</span>
         </div>
     </a>
+
 </div>
 
 </body>
