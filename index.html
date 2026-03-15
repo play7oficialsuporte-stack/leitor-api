@@ -7,32 +7,40 @@
     <title>Mangakai | Home</title>
     <style>
         :root { --primary: #ff1212; --bg: #ffffff; --text: #000000; }
-        body { background: var(--bg); color: var(--text); font-family: 'Helvetica', sans-serif; margin: 0; padding-bottom: 60px; }
+        body { background: var(--bg); color: var(--text); font-family: 'Helvetica', sans-serif; margin: 0; padding-bottom: 60px; overflow-x: hidden; }
         
-        /* Header Estilo Toomics */
+        /* Header Fixo */
         header { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; border-bottom: 1px solid #eee; position: sticky; top: 0; background: white; z-index: 100; }
-        .logo { color: var(--primary); font-weight: 900; font-size: 1.5rem; text-transform: uppercase; }
-        .menu-icons { display: flex; gap: 15px; font-size: 1.2rem; }
+        .logo { color: var(--primary); font-weight: 900; font-size: 1.4rem; text-transform: uppercase; letter-spacing: -1px; }
+        .menu-icons { display: flex; gap: 18px; font-size: 1.1rem; cursor: pointer; }
 
-        /* Navegação Superior */
-        .nav-tabs { display: flex; overflow-x: auto; padding: 10px 15px; gap: 20px; border-bottom: 1px solid #eee; white-space: nowrap; }
-        .nav-tabs a { text-decoration: none; color: #666; font-weight: bold; font-size: 0.9rem; }
+        /* Navegação Toomics */
+        .nav-tabs { display: flex; overflow-x: auto; padding: 12px 15px; gap: 20px; border-bottom: 1px solid #f4f4f4; white-space: nowrap; scrollbar-width: none; }
+        .nav-tabs a { text-decoration: none; color: #777; font-weight: bold; font-size: 0.85rem; }
         .nav-tabs a.active { color: var(--primary); border-bottom: 2px solid var(--primary); padding-bottom: 5px; }
 
-        /* Banner Carrossel (Placeholder para 5 itens) */
-        .carousel { width: 100%; height: 250px; background: #333; position: relative; overflow: hidden; }
-        .carousel-item { width: 100%; height: 100%; background-size: cover; background-position: center; display: flex; align-items: flex-end; padding: 20px; color: white; background-image: url('https://uploads.mangadex.org/covers/4393fd4e-d646-4bab-9c95-786168ccb618/3199fa66-3a73-4c11-9236-9cba765e6650.jpg'); }
-        .carousel-info h2 { margin: 0; font-size: 1.4rem; }
+        /* Carrossel de 5 Banners */
+        .carousel-container { width: 100%; height: 320px; position: relative; overflow: hidden; background: #000; }
+        .carousel-track { display: flex; width: 500%; height: 100%; transition: transform 0.5s ease-in-out; }
+        .banner { width: 20%; height: 100%; background-size: cover; background-position: center; position: relative; flex-shrink: 0; }
+        
+        /* Gradiente para o nome do mangá aparecer */
+        .banner::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 60%; background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, transparent 100%); }
+        .banner-info { position: absolute; bottom: 25px; left: 20px; color: white; z-index: 2; }
+        .banner-info h2 { margin: 0; font-size: 1.6rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .banner-tag { background: var(--primary); color: white; font-size: 0.7rem; padding: 3px 8px; border-radius: 3px; font-weight: bold; text-transform: uppercase; margin-bottom: 5px; display: inline-block; }
 
-        /* Seções de Conteúdo */
+        /* Grid de Conteúdo */
         .section { padding: 20px 15px; }
-        .section-title { font-weight: 900; font-size: 1.1rem; margin-bottom: 15px; display: flex; align-items: center; }
-        .section-title span { color: #ccc; margin-right: 10px; font-size: 1.5rem; }
+        .section-header { display: flex; align-items: center; margin-bottom: 15px; }
+        .rank-num { font-size: 1.8rem; font-weight: 900; color: #eee; margin-right: 10px; font-style: italic; }
+        .section-title { font-weight: 800; font-size: 1.1rem; text-transform: uppercase; }
 
-        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .manga-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
         .manga-card { text-decoration: none; color: var(--text); }
-        .manga-card img { width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: 4px; }
-        .manga-card p { margin: 5px 0; font-size: 0.8rem; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .manga-card img { width: 100%; aspect-ratio: 3/4; object-fit: cover; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .manga-name { margin: 6px 0 2px 0; font-size: 0.75rem; font-weight: 800; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+        .manga-genre { font-size: 0.65rem; color: #999; }
     </style>
 </head>
 <body>
@@ -44,32 +52,50 @@
 
     <nav class="nav-tabs">
         <a href="#" class="active">Home</a>
-        <a href="#">Gêneros</a>
         <a href="#">Séries</a>
-        <a href="#">Novos</a>
+        <a href="#">Gêneros</a>
+        <a href="#">Lançamentos</a>
         <a href="#">18+</a>
     </nav>
 
-    <div class="carousel">
-        <div class="carousel-item">
-            <div class="carousel-info">
-                <h2>Devilman</h2>
-                <p>O retorno dos demônios.</p>
+    <div class="carousel-container">
+        <div class="carousel-track" id="track">
+            <div class="banner" style="background-image: url('https://uploads.mangadex.org/covers/4393fd4e-d646-4bab-9c95-786168ccb618/3199fa66-3a73-4c11-9236-9cba765e6650.jpg');">
+                <div class="banner-info">
+                    <span class="banner-tag">Destaque</span>
+                    <h2>Devilman</h2>
+                </div>
             </div>
+            <div class="banner" style="background: #222;"><div class="banner-info"><h2>Mangá 2</h2></div></div>
+            <div class="banner" style="background: #333;"><div class="banner-info"><h2>Mangá 3</h2></div></div>
+            <div class="banner" style="background: #444;"><div class="banner-info"><h2>Mangá 4</h2></div></div>
+            <div class="banner" style="background: #555;"><div class="banner-info"><h2>Mangá 5</h2></div></div>
         </div>
     </div>
 
     <div class="section">
-        <div class="section-title"><span>1</span> TOP 10 do Dia</div>
-        <div class="grid">
+        <div class="section-header">
+            <span class="rank-num">1</span>
+            <span class="section-title">TOP 10 do Dia</span>
+        </div>
+        <div class="manga-grid">
             <a href="devilman.html" class="manga-card">
                 <img src="https://uploads.mangadex.org/covers/4393fd4e-d646-4bab-9c95-786168ccb618/3199fa66-3a73-4c11-9236-9cba765e6650.jpg.256.jpg">
-                <p>Devilman</p>
+                <p class="manga-name">Devilman</p>
+                <p class="manga-genre">Ação, Terror</p>
             </a>
-            <div class="manga-card"><img src="https://via.placeholder.com/200x300"><p>Em breve</p></div>
-            <div class="manga-card"><img src="https://via.placeholder.com/200x300"><p>Em breve</p></div>
         </div>
     </div>
+
+    <script>
+        // Script simples para rodar o carrossel sozinho
+        const track = document.getElementById('track');
+        let index = 0;
+        setInterval(() => {
+            index = (index + 1) % 5;
+            track.style.transform = `translateX(-${index * 20}%)`;
+        }, 4000);
+    </script>
 
 </body>
 </html>
