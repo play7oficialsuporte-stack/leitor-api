@@ -11,13 +11,9 @@
         .logo { font-weight: bold; color: var(--primary); font-size: 1.8rem; text-transform: uppercase; }
         .container { padding: 15px; }
         .section-title { font-size: 1.3rem; margin: 10px 0 20px 0; border-left: 5px solid var(--primary); padding-left: 12px; text-transform: uppercase; }
-        
-        /* Grid de 3 colunas igual ao Toomics */
         .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        
-        .manga-card { background: var(--card-bg); border-radius: 8px; overflow: hidden; border: 1px solid #222; text-decoration: none; color: white; transition: 0.2s; }
-        .manga-card:active { transform: scale(0.95); }
-        .manga-card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; display: block; }
+        .manga-card { background: var(--card-bg); border-radius: 8px; overflow: hidden; border: 1px solid #222; text-decoration: none; color: white; }
+        .manga-card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; display: block; background: #222; }
         .manga-info { padding: 8px; font-size: 0.7rem; text-align: center; font-weight: bold; }
         .manga-info h4 { margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     </style>
@@ -30,23 +26,12 @@
         <h2 class="section-title">Populares hoje</h2>
         <div class="grid">
 
-            <a href="manga.html?id=4393fd4e-d646-4b61-9333-8208477f9859" class="manga-card">
-                <img src="https://uploads.mangadex.org/covers/4393fd4e-d646-4b61-9333-8208477f9859/6045617a-69f8-4034-8c76-559d7d3d78c9.jpg.256.jpg">
+            <a href="manga.html?id=4393fd4e-d646-4bab-9c95-786168ccb618" class="manga-card">
+                <img src="https://uploads.mangadex.org/covers/4393fd4e-d646-4bab-9c95-786168ccb618/3199fa66-3a73-4c11-9236-9cba765e6650.jpg.256.jpg" referrerpolicy="no-referrer">
                 <div class="manga-info"><h4>Devilman</h4></div>
-            </a>
-
-            <a href="manga.html?id=ID_AQUI" class="manga-card">
-                <img src="URL_DA_CAPA_AQUI">
-                <div class="manga-info"><h4>Título do Mangá</h4></div>
-            </a>
-
-            <a href="manga.html?id=ID_AQUI" class="manga-card">
-                <img src="URL_DA_CAPA_AQUI">
-                <div class="manga-info"><h4>Título do Mangá</h4></div>
             </a>
 
             </div>
     </div>
-
 </body>
 </html>
