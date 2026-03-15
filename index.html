@@ -8,13 +8,17 @@
         :root { --primary: #ff1212; --bg: #0b0b0b; --card-bg: #1a1a1a; }
         body { background: var(--bg); color: white; font-family: sans-serif; margin: 0; padding-bottom: 50px; }
         header { padding: 20px; background: #000; border-bottom: 2px solid var(--primary); text-align: center; }
-        .logo { font-weight: bold; color: var(--primary); font-size: 1.8rem; }
+        .logo { font-weight: bold; color: var(--primary); font-size: 1.8rem; text-transform: uppercase; }
         .container { padding: 15px; }
-        .section-title { font-size: 1.3rem; margin: 10px 0 20px 0; border-left: 5px solid var(--primary); padding-left: 12px; }
+        .section-title { font-size: 1.3rem; margin: 10px 0 20px 0; border-left: 5px solid var(--primary); padding-left: 12px; text-transform: uppercase; }
+        
+        /* Grid de 3 colunas igual ao Toomics */
         .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .manga-card { background: var(--card-bg); border-radius: 8px; overflow: hidden; border: 1px solid #222; text-decoration: none; color: white; }
+        
+        .manga-card { background: var(--card-bg); border-radius: 8px; overflow: hidden; border: 1px solid #222; text-decoration: none; color: white; transition: 0.2s; }
+        .manga-card:active { transform: scale(0.95); }
         .manga-card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; display: block; }
-        .manga-info { padding: 8px; font-size: 0.7rem; text-align: center; }
+        .manga-info { padding: 8px; font-size: 0.7rem; text-align: center; font-weight: bold; }
         .manga-info h4 { margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     </style>
 </head>
@@ -26,32 +30,23 @@
         <h2 class="section-title">Populares hoje</h2>
         <div class="grid">
 
-            <a href="manga.html?id=6634208e-324e-4148-9c17-488102d5f0e9" class="manga-card">
-                <img src="https://uploads.mangadex.org/covers/6634208e-324e-4148-9c17-488102d5f0e9/5f4886b6-e7e0-47e0-9993-4375f106f238.jpg.256.jpg">
+            <a href="manga.html?id=4393fd4e-d646-4b61-9333-8208477f9859" class="manga-card">
+                <img src="https://uploads.mangadex.org/covers/4393fd4e-d646-4b61-9333-8208477f9859/6045617a-69f8-4034-8c76-559d7d3d78c9.jpg.256.jpg">
                 <div class="manga-info"><h4>Devilman</h4></div>
             </a>
 
-            <a href="manga.html?id=a1c7c81f-e704-4cc0-a199-1c97a1c7fcad" class="manga-card">
-                <img src="https://uploads.mangadex.org/covers/a1c7c81f-e704-4cc0-a199-1c97a1c7fcad/6089311c-d784-486a-a82a-049880299696.jpg.256.jpg">
-                <div class="manga-info"><h4>Borderline Friends</h4></div>
+            <a href="manga.html?id=ID_AQUI" class="manga-card">
+                <img src="URL_DA_CAPA_AQUI">
+                <div class="manga-info"><h4>Título do Mangá</h4></div>
             </a>
 
-            <a href="manga.html?id=3fd0a25b-0130-43ed-97a1-22e3d3077e68" class="manga-card">
-                <img src="https://uploads.mangadex.org/covers/3fd0a25b-0130-43ed-97a1-22e3d3077e68/f3c9e992-5e4c-473d-82d2-f673322197be.jpg.256.jpg">
-                <div class="manga-info"><h4>Stepmother's Friends</h4></div>
+            <a href="manga.html?id=ID_AQUI" class="manga-card">
+                <img src="URL_DA_CAPA_AQUI">
+                <div class="manga-info"><h4>Título do Mangá</h4></div>
             </a>
 
-            <a href="manga.html?id=32d76d19-8a05-4d40-9fe4-651c6414cc0a" class="manga-card">
-                <img src="https://uploads.mangadex.org/covers/32d76d19-8a05-4d40-9fe4-651c6414cc0a/e990003b-c40d-4009-87a1-a48e71887e2b.jpg.256.jpg">
-                <div class="manga-info"><h4>Solo Leveling</h4></div>
-            </a>
-
-            <a href="manga.html?id=437a3424-77e8-466d-895a-c63283f51044" class="manga-card">
-                <img src="https://uploads.mangadex.org/covers/437a3424-77e8-466d-895a-c63283f51044/5f9df099-3549-43c3-8f08-01d713a078e8.jpg.256.jpg">
-                <div class="manga-info"><h4>Bastard</h4></div>
-            </a>
-
-        </div>
+            </div>
     </div>
+
 </body>
 </html>
