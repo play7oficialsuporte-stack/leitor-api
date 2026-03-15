@@ -3,30 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leitor - MangaCloud</title>
+    <title>Leitor Mangakai</title>
     <style>
-        body { background: #000; margin: 0; padding: 0; }
-        #reader { width: 100%; max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; }
-        #reader img { width: 100%; height: auto; display: block; margin: 0; padding: 0; border: none; }
-        .btn-voltar { position: fixed; top: 10px; left: 10px; background: rgba(255,0,0,0.7); color: white; border: none; padding: 10px; border-radius: 5px; z-index: 100; cursor: pointer; }
+        body { background: #000; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; }
+        .manga-page { width: 100%; max-width: 800px; display: block; }
+        .nav-reader { width: 100%; background: #111; padding: 15px 0; display: flex; justify-content: center; gap: 20px; position: sticky; top: 0; }
+        .btn-nav { background: #ff1212; color: white; padding: 10px 20px; text-decoration: none; font-weight: bold; border-radius: 5px; }
     </style>
 </head>
 <body>
-    <button class="btn-voltar" onclick="window.history.back()">← Sair</button>
-    <div id="reader">Carregando imagens...</div>
 
-    <script src="js/api.js"></script>
+    <div class="nav-reader">
+        <a href="index.html" class="btn-nav">HOME</a>
+        <a href="devilman.html" class="btn-nav">VOLTAR</a>
+    </div>
+
+    <div id="pages-container">
+        </div>
+
     <script>
-        const id = new URLSearchParams(window.location.search).get('id');
-        async function loadReader() {
-            const resp = await fetch(`https://api.mangadex.org/at-home/server/${id}`);
-            const data = await resp.json();
-            const { hash, data: files } = data.chapter;
-            const baseUrl = data.baseUrl;
-            const container = document.getElementById('reader');
-            container.innerHTML = files.map(f => `<img src="${baseUrl}/data/${hash}/${f}" loading="lazy">`).join('');
+        // Exemplo manual: se você subiu 10 imagens no GitHub
+        const container = document.getElementById('pages-container');
+        const totalPaginas = 10; // Mude conforme o número de fotos que você baixar
+        const pastaManga = "mangas/devilman/cap1/"; // Caminho da sua pasta no GitHub
+
+        for (let i = 1; i <= totalPaginas; i++) {
+            const img = document.createElement('img');
+            // Formata o número para 01, 02, etc.
+            let num = i < 10 ? '0' + i : i;
+            img.src = `${pastaManga}${num}.jpg`;
+            img.className = 'manga-page';
+            container.appendChild(img);
         }
-        if(id) loadReader();
     </script>
 </body>
 </html>
