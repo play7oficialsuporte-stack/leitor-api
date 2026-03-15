@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leitor Mangakai</title>
+    <style>
+        body { background: #000; margin: 0; display: flex; flex-direction: column; align-items: center; }
+        img { width: 100%; max-width: 800px; }
+        .nav { width: 100%; background: #111; padding: 15px; position: sticky; top: 0; text-align: center; }
+        .btn { color: white; text-decoration: none; font-weight: bold; border: 1px solid red; padding: 5px 15px; border-radius: 20px; }
+    </style>
+</head>
+<body>
+    <div class="nav"><a href="index.html" class="btn">VOLTAR</a></div>
+    <div id="leitor"></div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const manga = params.get('manga');
+        const cap = params.get('cap');
+        const arquivo = params.get('img');
+
+        const display = document.getElementById('leitor');
+        const imagem = document.createElement('img');
+        // Busca na sua pasta: mangas/Jujutsu Kaisen/Cap01/completo.jpg
+        imagem.src = `mangas/${manga}/${cap}/${arquivo}`;
+        display.appendChild(imagem);
+    </script>
+</body>
+</html>
