@@ -3,130 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="referrer" content="no-referrer">
     <title>Mangakai | Home</title>
     <style>
-        :root { --primary: #ff1212; --bg: #ffffff; --text: #000000; }
-        body { background: var(--bg); color: var(--text); font-family: 'Helvetica', sans-serif; margin: 0; padding-bottom: 60px; overflow-x: hidden; }
+        :root { --primary: #ff1212; --bg: #ffffff; }
+        body { background: var(--bg); font-family: 'Helvetica', sans-serif; margin: 0; padding-bottom: 50px; }
+        header { padding: 15px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .logo { color: var(--primary); font-weight: 900; font-size: 1.5rem; }
         
-        /* Header Estilo Toomics */
-        header { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; border-bottom: 1px solid #eee; position: sticky; top: 0; background: white; z-index: 100; }
-        .logo { color: var(--primary); font-weight: 900; font-size: 1.4rem; text-transform: uppercase; letter-spacing: -1px; }
-        .menu-icons { display: flex; gap: 18px; font-size: 1.1rem; }
-
-        /* Navegação */
-        .nav-tabs { display: flex; overflow-x: auto; padding: 12px 15px; gap: 20px; border-bottom: 1px solid #f4f4f4; white-space: nowrap; scrollbar-width: none; }
-        .nav-tabs a { text-decoration: none; color: #777; font-weight: bold; font-size: 0.85rem; }
-        .nav-tabs a.active { color: var(--primary); border-bottom: 2px solid var(--primary); padding-bottom: 5px; }
-
-        /* Carrossel de 5 Banners */
-        .carousel-container { width: 100%; height: 350px; position: relative; overflow: hidden; background: #000; }
-        .carousel-track { display: flex; width: 500%; height: 100%; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
-        .banner { width: 20%; height: 100%; background-size: cover; background-position: center; position: relative; flex-shrink: 0; }
+        /* Banner Destaque */
+        .main-banner { width: 100%; height: 300px; background: #000; position: relative; overflow: hidden; }
+        .banner-img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; }
+        .banner-info { position: absolute; bottom: 20px; left: 20px; color: white; }
         
-        /* Gradiente para leitura do título */
-        .banner::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 70%; background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, transparent 100%); }
-        .banner-info { position: absolute; bottom: 30px; left: 20px; color: white; z-index: 2; }
-        .banner-info h2 { margin: 0; font-size: 1.8rem; font-weight: 900; }
-        .banner-tag { background: var(--primary); color: white; font-size: 0.7rem; padding: 3px 8px; border-radius: 3px; font-weight: bold; text-transform: uppercase; margin-bottom: 8px; display: inline-block; }
-
-        /* Seção TOP 10 */
-        .section { padding: 25px 15px; }
-        .section-header { display: flex; align-items: center; margin-bottom: 20px; }
-        .rank-num { font-size: 2rem; font-weight: 900; color: #f0f0f0; margin-right: 12px; font-style: italic; }
-        .section-title { font-weight: 800; font-size: 1.2rem; text-transform: uppercase; }
-
-        /* Grid de Mangás */
-        .manga-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-        .manga-card { text-decoration: none; color: var(--text); }
-        .manga-card img { width: 100%; aspect-ratio: 3/4; border-radius: 4px; object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .manga-name { margin: 8px 0 2px 0; font-size: 0.8rem; font-weight: 800; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-        .manga-genre { font-size: 0.65rem; color: #999; }
+        /* Ranking Toomics */
+        .section { padding: 20px; }
+        .rank-card { display: flex; align-items: center; text-decoration: none; color: #000; margin-bottom: 15px; }
+        .rank-number { font-size: 3rem; font-weight: 900; font-style: italic; color: #f0f0f0; margin-right: 15px; }
+        .rank-thumb { width: 80px; height: 110px; border-radius: 4px; object-fit: cover; }
+        .rank-details { margin-left: 15px; }
+        .manga-title { font-weight: bold; font-size: 1.1rem; margin: 0; }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">Mangakai</div>
-        <div class="menu-icons">🔍 ☰</div>
-    </header>
+<header>
+    <div class="logo">MANGAKAI</div>
+    <div>🔍</div>
+</header>
 
-    <nav class="nav-tabs">
-        <a href="#" class="active">Home</a>
-        <a href="#">Séries</a>
-        <a href="#">Gêneros</a>
-        <a href="#">Lançamentos</a>
-        <a href="#">18+</a>
-    </nav>
-
-    <div class="carousel-container">
-        <div class="carousel-track" id="track">
-            <div class="banner" style="background-image: url('https://uploads.mangadex.org/covers/4393fd4e-d646-4bab-9c95-786168ccb618/3199fa66-3a73-4c11-9236-9cba765e6650.jpg');">
-                <div class="banner-info">
-                    <span class="banner-tag">Destaque</span>
-                    <h2>Devilman</h2>
-                </div>
-            </div>
-            <div class="banner" style="background-image: url('https://uploads.mangadex.org/covers/5e6d4688-dfe5-4e78-9b0b-64f51089d534/fa8963c5-b21b-4a5c-b5d6-70b4bed991a4.jpg');">
-                <div class="banner-info">
-                    <span class="banner-tag">Popular</span>
-                    <h2>Dandadan</h2>
-                </div>
-            </div>
-            <div class="banner" style="background-image: url('https://uploads.mangadex.org/covers/546bfea8-8134-40e1-9676-fe21da8622dc/03ad377d-7037-4435-ae74-f18cb417590b.jpg');">
-                <div class="banner-info">
-                    <span class="banner-tag">Novo</span>
-                    <h2>The Horizon</h2>
-                </div>
-            </div>
-            <div class="banner" style="background-image: url('https://uploads.mangadex.org/covers/5e6d4688-dfe5-4e78-9b0b-64f51089d534/fa8963c5-b21b-4a5c-b5d6-70b4bed991a4.jpg');">
-                <div class="banner-info">
-                    <span class="banner-tag">Séries</span>
-                    <h2>Dandadan II</h2>
-                </div>
-            </div>
-            <div class="banner" style="background-image: url('https://uploads.mangadex.org/covers/546bfea8-8134-40e1-9676-fe21da8622dc/03ad377d-7037-4435-ae74-f18cb417590b.jpg');">
-                <div class="banner-info">
-                    <span class="banner-tag">Top do Dia</span>
-                    <h2>The Horizon II</h2>
-                </div>
-            </div>
+<div class="main-banner">
+    <a href="leitor.html?manga=Jujutsu Kaisen&cap=Cap01&img=completo.jpg">
+        <img src="https://images.tcdn.com.br/img/img_prod/1129845/manga_jujutsu_kaisen_batalha_de_feiticeiros_vol_01_13075_1_092040b3c200676449171e724036e4f3.jpg" class="banner-img">
+        <div class="banner-info">
+            <span style="background:red; padding:2px 5px; font-size:0.7rem;">NOVO</span>
+            <h2>Jujutsu Kaisen</h2>
+            <p>Capítulo 01 disponível!</p>
         </div>
-    </div>
+    </a>
+</div>
 
-    <div class="section">
-        <div class="section-header">
-            <span class="rank-num">1</span>
-            <span class="section-title">TOP 10 do Dia</span>
+<div class="section">
+    <h3 style="text-transform:uppercase;">Top 10 do Dia</h3>
+    
+    <a href="leitor.html?manga=Jujutsu Kaisen&cap=Cap01&img=completo.jpg" class="rank-card">
+        <span class="rank-number">1</span>
+        <img src="https://images.tcdn.com.br/img/img_prod/1129845/manga_jujutsu_kaisen_batalha_de_feiticeiros_vol_01_13075_1_092040b3c200676449171e724036e4f3.jpg" class="rank-thumb">
+        <div class="rank-details">
+            <p class="manga-title">Jujutsu Kaisen</p>
+            <small style="color:#999;">Ação, Sobrenatural</small>
         </div>
-        <div class="manga-grid">
-            <a href="devilman.html" class="manga-card">
-                <img src="https://uploads.mangadex.org/covers/4393fd4e-d646-4bab-9c95-786168ccb618/3199fa66-3a73-4c11-9236-9cba765e6650.jpg.256.jpg">
-                <p class="manga-name">Devilman</p>
-                <p class="manga-genre">Ação, Terror</p>
-            </a>
-            <div class="manga-card">
-                <img src="https://uploads.mangadex.org/covers/5e6d4688-dfe5-4e78-9b0b-64f51089d534/fa8963c5-b21b-4a5c-b5d6-70b4bed991a4.jpg.256.jpg">
-                <p class="manga-name">Dandadan</p>
-                <p class="manga-genre">Sci-fi, Comédia</p>
-            </div>
-            <div class="manga-card">
-                <img src="https://uploads.mangadex.org/covers/546bfea8-8134-40e1-9676-fe21da8622dc/03ad377d-7037-4435-ae74-f18cb417590b.jpg.256.jpg">
-                <p class="manga-name">The Horizon</p>
-                <p class="manga-genre">Drama, Seinen</p>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Lógica do carrossel: troca a cada 4 segundos
-        const track = document.getElementById('track');
-        let index = 0;
-        setInterval(() => {
-            index = (index + 1) % 5;
-            track.style.transform = `translateX(-${index * 20}%)`;
-        }, 4000);
-    </script>
+    </a>
+</div>
 
 </body>
 </html>
