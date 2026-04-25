@@ -1,18 +1,60 @@
-<div style="width: 100%; max-width: 600px; margin: 0 auto; overflow: hidden;">
-    
-    <div style="border-left: 5px solid #e74c3c; padding: 10px; background: #2c3e50; color: white; margin-bottom: 10px;">
-        <h3 style="margin: 0;">Guerra aos Cavaleiros</h3>
-    </div>
+<style>
+    /* Estilo para o título com borda lateral estilo Play7 */
+    .game-header {
+        border-left: 5px solid #ff0000;
+        background: #2c3e50;
+        color: white;
+        padding: 12px;
+        font-family: sans-serif;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
 
-    <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
-        <iframe 
-            src="https://play.gamepix.com/war-the-knights/embed?sid=87277" 
-            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;" 
-            scrolling="no" 
-            allowfullscreen>
-        </iframe>
-    </div>
-    
-    <div style="text-align: center; margin-top: 10px;">
-        </div>
+    /* Container do Jogo para não travar e ocupar tudo */
+    .game-wrapper {
+        position: relative;
+        width: 100vw; /* Largura total da tela */
+        height: 60vh; /* Altura de 60% da tela para sobrar espaço pros anúncios/botões */
+        background: #000;
+        overflow: hidden;
+    }
+
+    .game-wrapper iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
+    /* Botão de Concluir estilizado */
+    .btn-finish {
+        width: 95%;
+        margin: 10px auto;
+        display: block;
+        padding: 15px;
+        background: #27ae60;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        font-size: 1.1rem;
+    }
+</style>
+
+<div class="game-header">
+    Guerra aos Cavaleiros
 </div>
+
+<div class="game-wrapper">
+    <iframe 
+        src="https://play.gamepix.com/war-the-knights/embed?sid=87277" 
+        allow="autoplay; fullscreen; keyboard"
+        loading="lazy">
+    </iframe>
+</div>
+
+<button class="btn-finish" onclick="concluirMissao()">
+    CONCLUIR MISSÃO + R$ 0,05
+</button>
