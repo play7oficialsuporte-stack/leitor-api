@@ -1,90 +1,88 @@
 <style>
-    /* Container do Jogo em Tela Cheia */
-    .game-overlay {
-        position: fixed;
+    /* Reset total para mobile */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body, html {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #000;
+        position: fixed; /* Evita que o site "role" atrás do jogo */
+    }
+
+    /* Container que se adapta ao giro do celular */
+    .game-viewport {
+        position: absolute;
         top: 0;
         left: 0;
         width: 100vw;
         height: 100vh;
-        z-index: 9999;
-        background: #000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
-    iframe { width: 100%; height: 100%; border: none; }
+    iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+        /* Força o hardware do celular a renderizar melhor o 3D */
+        transform: translateZ(0);
+    }
 
-    /* Barra de Progresso no Topo */
-    #timer-bar-container {
+    /* Barra de progresso discreta no topo */
+    #timer-line {
         position: fixed;
         top: 0;
         left: 0;
-        width: 100%;
-        height: 8px;
-        background: #333;
-        z-index: 10001;
-    }
-
-    #timer-bar {
+        height: 4px;
+        background: #00ff88;
         width: 0%;
-        height: 100%;
-        background: #00ff88; /* Verde Neon */
-        transition: width 1s linear;
-    }
-
-    /* Botão que fica escondido até o tempo acabar */
-    #btn-recompensa {
-        display: none; /* Começa escondido */
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 10002;
-        padding: 15px 30px;
-        background: #27ae60;
-        color: white;
-        font-weight: bold;
-        border: none;
-        border-radius: 50px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        z-index: 10001;
+        box-shadow: 0 0 10px #00ff88;
     }
 </style>
 
-<div id="timer-bar-container"><div id="timer-bar"></div></div>
+<div id="timer-line"></div>
 
-<button id="btn-recompensa" onclick="liberarPremio()">
-    🎁 CONCLUIR MISSÃO E RECEBER
-</button>
-
-<div class="game-overlay">
-    <iframe src="https://play.gamepix.com/santabalt/embed?sid=87277"></iframe>
+<div class="game-viewport">
+    <iframe 
+        id="meuJogo"
+        src="https://play.gamepix.com/war-the-knights/embed?sid=87277" 
+        allow="autoplay; fullscreen; keyboard"
+        scrolling="no">
+    </iframe>
 </div>
 
 <script>
-    let tempoRestante = 120; // 2 minutos em segundos
-    const barra = document.getElementById('timer-bar');
-    const botao = document.getElementById('btn-recompensa');
+    // Sistema para "limpar" o scroll no mobile e ganhar espaço
+    function fixMobileSize() {
+        window.scrollTo(0, 1);
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
 
-    const contador = setInterval(() => {
-        tempoRestante--;
-        
-        // Atualiza a barra de progresso visualmente
-        let progresso = ((120 - tempoRestante) / 120) * 100;
-        barra.style.width = progresso + "%";
+    window.addEventListener('resize', fixMobileSize);
+    window.addEventListener('orientationchange', () => {
+        // Dá um pequeno atraso para o celular terminar de girar
+        setTimeout(fixMobileSize, 200);
+    });
 
-        if (tempoRestante <= 0) {
-            clearInterval(contador);
-            botao.style.display = 'block'; // Mostra o botão após 2 min
-            barra.style.background = '#27ae60';
+    // Contador de 2 minutos (120 segundos)
+    let tempo = 120;
+    const barra = document.getElementById('timer-line');
+
+    const tick = setInterval(() => {
+        tempo--;
+        let percent = ((120 - tempo) / 120) * 100;
+        barra.style.width = percent + "%";
+
+        if (tempo <= 0) {
+            clearInterval(tick);
+            // Aqui você dispara o seu Interstitial antes da recompensa
+            console.log("Tempo concluído!");
         }
     }, 1000);
 
-    function liberarPremio() {
-        // 1. DISPARAR O SEU INTERSTITIAL AQUI (Galaksion/Adsterra)
-        console.log("Abrindo anúncio Interstitial...");
-        
-        // 2. Lógica para dar o saldo no seu site/Firebase
-        alert("Missão Concluída! Saldo adicionado.");
-        
-        // Redireciona de volta para a Home
-        window.location.href = "index.html"; 
-    }
+    fixMobileSize();
 </script>
