@@ -1,1 +1,90 @@
-<iframe style="height: 320px; width: 480px;" src="https://play.gamepix.com/santabalt/embed?sid=87277" width="480" height="320" frameborder="0" scrolling="no"></iframe>
+<style>
+    /* Container do Jogo em Tela Cheia */
+    .game-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 9999;
+        background: #000;
+    }
+
+    iframe { width: 100%; height: 100%; border: none; }
+
+    /* Barra de Progresso no Topo */
+    #timer-bar-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 8px;
+        background: #333;
+        z-index: 10001;
+    }
+
+    #timer-bar {
+        width: 0%;
+        height: 100%;
+        background: #00ff88; /* Verde Neon */
+        transition: width 1s linear;
+    }
+
+    /* Botão que fica escondido até o tempo acabar */
+    #btn-recompensa {
+        display: none; /* Começa escondido */
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10002;
+        padding: 15px 30px;
+        background: #27ae60;
+        color: white;
+        font-weight: bold;
+        border: none;
+        border-radius: 50px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+</style>
+
+<div id="timer-bar-container"><div id="timer-bar"></div></div>
+
+<button id="btn-recompensa" onclick="liberarPremio()">
+    🎁 CONCLUIR MISSÃO E RECEBER
+</button>
+
+<div class="game-overlay">
+    <iframe src="https://play.gamepix.com/santabalt/embed?sid=87277"></iframe>
+</div>
+
+<script>
+    let tempoRestante = 120; // 2 minutos em segundos
+    const barra = document.getElementById('timer-bar');
+    const botao = document.getElementById('btn-recompensa');
+
+    const contador = setInterval(() => {
+        tempoRestante--;
+        
+        // Atualiza a barra de progresso visualmente
+        let progresso = ((120 - tempoRestante) / 120) * 100;
+        barra.style.width = progresso + "%";
+
+        if (tempoRestante <= 0) {
+            clearInterval(contador);
+            botao.style.display = 'block'; // Mostra o botão após 2 min
+            barra.style.background = '#27ae60';
+        }
+    }, 1000);
+
+    function liberarPremio() {
+        // 1. DISPARAR O SEU INTERSTITIAL AQUI (Galaksion/Adsterra)
+        console.log("Abrindo anúncio Interstitial...");
+        
+        // 2. Lógica para dar o saldo no seu site/Firebase
+        alert("Missão Concluída! Saldo adicionado.");
+        
+        // Redireciona de volta para a Home
+        window.location.href = "index.html"; 
+    }
+</script>
