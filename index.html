@@ -6,83 +6,117 @@
         width: 100%;
         height: 100%;
         overflow: hidden;
-        background: #000;
-        position: fixed; /* Evita que o site "role" atrás do jogo */
+        background: #1a1a1a; /* Fundo que combina com Tentrix */
+        font-family: sans-serif;
     }
 
-    /* Container que se adapta ao giro do celular */
-    .game-viewport {
-        position: absolute;
+    /* Barra de Progresso Estilo Play7 */
+    #progress-container {
+        position: fixed;
         top: 0;
         left: 0;
+        width: 100%;
+        height: 6px;
+        background: #333;
+        z-index: 10001;
+    }
+
+    #progress-bar {
+        width: 0%;
+        height: 100%;
+        background: linear-gradient(90deg, #ff0000, #ff5555);
+        box-shadow: 0 0 10px #ff0000;
+        transition: width 1s linear;
+    }
+
+    /* Container do Jogo */
+    .game-box {
+        position: absolute;
+        top: 6px; /* Começa logo abaixo da barra */
+        left: 0;
         width: 100vw;
-        height: 100vh;
+        height: calc(100vh - 6px);
         display: flex;
-        justify-content: center;
-        align-items: center;
+        flex-direction: column;
     }
 
     iframe {
         width: 100%;
-        height: 100%;
+        flex-grow: 1;
         border: none;
-        /* Força o hardware do celular a renderizar melhor o 3D */
-        transform: translateZ(0);
     }
 
-    /* Barra de progresso discreta no topo */
-    #timer-line {
+    /* Botão de Concluir (Invisível no início) */
+    #btn-finish {
+        display: none;
         position: fixed;
-        top: 0;
-        left: 0;
-        height: 4px;
-        background: #00ff88;
-        width: 0%;
-        z-index: 10001;
-        box-shadow: 0 0 10px #00ff88;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10002;
+        padding: 18px 35px;
+        background: #27ae60;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-weight: bold;
+        font-size: 1.1rem;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.6);
+        animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+        0% { transform: translateX(-50%) scale(1); }
+        50% { transform: translateX(-50%) scale(1.05); }
+        100% { transform: translateX(-50%) scale(1); }
     }
 </style>
 
-<div id="timer-line"></div>
+<div id="progress-container">
+    <div id="progress-bar"></div>
+</div>
 
-<div class="game-viewport">
+<button id="btn-finish" onclick="concluirMissao()">
+    ✅ RESGATAR RECOMPENSA
+</button>
+
+<div class="game-box">
     <iframe 
-        id="meuJogo"
-        src="https://play.gamepix.com/war-the-knights/embed?sid=87277" 
+        id="game-iframe"
+        src="https://play.gamepix.com/tentrix/embed?sid=87277" 
         allow="autoplay; fullscreen; keyboard"
         scrolling="no">
     </iframe>
 </div>
 
 <script>
-    // Sistema para "limpar" o scroll no mobile e ganhar espaço
-    function fixMobileSize() {
-        window.scrollTo(0, 1);
-        const vh = window.innerHeight * 0.01;
-        document.documentElement.style.setProperty('--vh', `${vh}px`);
-    }
+    let tempoTotal = 120; // 2 minutos
+    let segundosPassados = 0;
+    const bar = document.getElementById('progress-bar');
+    const btn = document.getElementById('btn-finish');
 
-    window.addEventListener('resize', fixMobileSize);
-    window.addEventListener('orientationchange', () => {
-        // Dá um pequeno atraso para o celular terminar de girar
-        setTimeout(fixMobileSize, 200);
-    });
+    const timer = setInterval(() => {
+        segundosPassados++;
+        let porcentagem = (segundosPassados / tempoTotal) * 100;
+        bar.style.width = porcentagem + "%";
 
-    // Contador de 2 minutos (120 segundos)
-    let tempo = 120;
-    const barra = document.getElementById('timer-line');
-
-    const tick = setInterval(() => {
-        tempo--;
-        let percent = ((120 - tempo) / 120) * 100;
-        barra.style.width = percent + "%";
-
-        if (tempo <= 0) {
-            clearInterval(tick);
-            // Aqui você dispara o seu Interstitial antes da recompensa
-            console.log("Tempo concluído!");
+        if (segundosPassados >= tempoTotal) {
+            clearInterval(timer);
+            btn.style.display = 'block';
+            bar.style.background = '#27ae60'; // Muda para verde quando acaba
+            bar.style.boxShadow = '0 0 10px #27ae60';
         }
     }, 1000);
 
-    fixMobileSize();
+    function concluirMissao() {
+        // 1. DISPARAR SEU ANÚNCIO INTERSTITIAL (Galaksion/Adsterra)
+        console.log("Abrindo anúncio...");
+        
+        // Link Direto Opcional (se usar Adsterra Direct Link)
+        // window.open('SEU_LINK_DIRETO_AQUI', '_blank');
+
+        // 2. Redirecionar para processar o pagamento no seu site
+        alert("Excelente! Recompensa processada.");
+        window.location.href = "sua-pagina-de-sucesso.html";
+    }
 </script>
