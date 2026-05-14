@@ -91,20 +91,33 @@
     </div>
 
     <div id="modal-checkin" class="modal">
-        <div class="modal-content">
-            <h2 style="color:var(--primary); margin-top:0;">Bônus Diário! 🎁</h2>
-            <p>Seu presente de <b>R$ 2,50</b> está pronto.</p>
-            <button class="btn" onclick="realizarCheckin()" style="width:100%; padding:18px;">RESGATAR AGORA</button>
-        </div>
-       <div id="modal-ja-resgatado" class="modal">
-    <div class="modal-content" style="border-color: var(--accent);">
-        <h2 style="color:var(--accent); margin-top:0;">Aviso! ⚠️</h2>
-        <p>Você já resgatou o bônus de hoje! Volte amanhã.</p>
-        <button class="btn" onclick="document.getElementById('modal-ja-resgatado').style.display='none'" style="width:100%; padding:18px; background:var(--accent)">ENTENDIDO</button>
+    <div class="modal-content">
+        <h2 style="color:var(--primary); margin-top:0;">Bônus Diário! 🎁</h2>
+        <p>Seu presente de <b>R$ 2,50</b> está pronto.</p>
+
+        <button class="btn" onclick="realizarCheckin()" style="width:100%; padding:18px;">
+            RESGATAR AGORA
+        </button>
     </div>
 </div>
 
+<div id="modal-ja-resgatado" class="modal">
+    <div class="modal-content" style="border-color: var(--accent);">
+        <h2 style="color:var(--accent); margin-top:0;">Aviso! ⚠️</h2>
+
+        <p>
+            Você já resgatou o bônus de hoje! Volte amanhã.
+        </p>
+
+        <button 
+            class="btn"
+            onclick="document.getElementById('modal-ja-resgatado').style.display='none'"
+            style="width:100%; padding:18px; background:var(--accent)"
+        >
+            ENTENDIDO
+        </button>
     </div>
+</div>
 
     <div class="balance-box">
         <div class="card">
