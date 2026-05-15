@@ -1,65 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Missões</title>
+    
+    <!-- CSS embutido para garantir que a página renderize mesmo sem internet -->
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .layout-vertical {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 500px;
+            gap: 12px;
+        }
+
+        .botao-missao {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.2s, transform 0.1s;
+            text-align: center;
+            width: 100%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .botao-missao:hover {
+            background-color: #0056b3;
+            transform: translateY(-1px);
+        }
+
+        /* Tela de bloqueio - Inicialmente oculta com display: none */
+        #bloqueio-anuncio {
+            display: none; 
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .container-player {
+            width: 90%;
+            max-width: 640px;
+            aspect-ratio: 16/9;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .texto-aguarde {
+            color: white;
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Missões Disponíveis</h1>
+
+    <div class="layout-vertical">
+        <!-- Altere os links de destino dentro do atributo data-destino -->
+        <button class="botao-missao" data-destino="https://youtube.com">Missão 1</button>
+        <button class="botao-missao" data-destino="https://youtube.com">Missão 2</button>
+        <button class="botao-missao" data-destino="https://youtube.com">Missão 3</button>
+        <button class="botao-missao" data-destino="https://youtube.com">Missão 4</button>
+        <button class="botao-missao" data-destino="https://youtube.com">Missão 5</button>
+        <button class="botao-missao" data-destino="https://youtube.com">Missão 6</button>
+        <button class="botao-missao" data-destino="https://youtube.com">Missão 7</button>
+        <button class="botao-missao" data-destino="https://youtube.com">Missão 8</button>
+        <button class="botao-missao" data-destino="https://youtube.com">Missão 9</button>
+        <button class="botao-missao" data-destino="https://youtube.com">Missão 10</button>
+    </div>
+
+    <!-- Tela de Anúncio protegida -->
+    <div id="bloqueio-anuncio">
+        <div class="texto-aguarde" id="status-texto">Carregando anúncio...</div>
+        <div class="container-player">
+            <!-- Usando a tag de vídeo nativa do HTML5 para evitar erros de tela branca -->
+            <video id="player_vast" controls autoplay muted playsinline></video>
+        </div>
+    </div>
+
     <script>
+        // URL VAST COMPLETA corrigida
         const urlVast = "https://funny-tooth.com";
         let linkDestinoAtual = "";
-        let meuPlayer = null;
-        let travaSeguranca = null;
+        let tempoLimite = null;
 
-        // Executa a ação ao clicar em qualquer botão de missão
+        // Ativa o clique nos botões
         document.querySelectorAll('.botao-missao').forEach(botao => {
             botao.addEventListener('click', function() {
                 linkDestinoAtual = this.getAttribute('data-destino');
-                abrirAnuncioEViajar();
+                executarFluxoAnuncio();
             });
         });
 
-        function abrirAnuncioEViajar() {
-            // Exibe a tela preta de bloqueio
-            document.getElementById('bloqueio-anuncio').style.display = 'flex';
+        function executarFluxoAnuncio() {
+            const telaBloqueio = document.getElementById('bloqueio-anuncio');
+            const videoElement = document.getElementById('player_vast');
+            const statusTexto = document.getElementById('status-texto');
 
-            // Limpa travas anteriores se houver
-            if (travaSeguranca) clearTimeout(travaSeguranca);
+            // Mostra a tela preta
+            telaBloqueio.style.display = 'flex';
+            statusTexto.innerText = "Carregando anúncio da missão...";
 
-            // TRAVA DE SEGURANÇA: Se o anúncio não carregar em 3 segundos, redireciona de qualquer forma
-            travaSeguranca = setTimeout(function() {
-                console.log("Anúncio demorou para responder. Redirecionando por segurança...");
-                redirecionarUsuario();
-            }, 3000);
+            // Segurança: Se o anúncio falhar ou não carregar em 4 segundos, pula automático
+            tempoLimite = setTimeout(() => {
+                console.log("Tempo limite esgotado. Redirecionando...");
+                redirecionar();
+            }, 4000);
 
-            // Se o player já existia de um clique anterior, destrói para resetar
-            if (meuPlayer) {
-                try { meuPlayer.destroy(); } catch(e) {}
+            // Tenta injetar o link VAST de forma nativa no player
+            try {
+                videoElement.src = urlVast;
+                
+                // Ouvintes de eventos nativos do navegador
+                videoElement.onended = () => redirecionar();
+                videoElement.onerror = () => {
+                    console.log("Erro ao reproduzir a URL de anúncio.");
+                    redirecionar();
+                };
+                videoElement.onplaying = () => {
+                    // Se o vídeo começou a rodar de fato, atualiza o texto na tela
+                    statusTexto.innerText = "Assista ao anúncio para liberar a missão";
+                };
+            } catch (erro) {
+                console.error("Falha no script:", erro);
+                redirecionar();
             }
-
-            // Inicializa o player de vídeo dinamicamente
-            meuPlayer = fluidPlayer('player_vast', {
-                layoutControls: {
-                    autoPlay: true,
-                    mute: true, // Forçar 'true' ajuda a ignorar bloqueios estritos de navegadores mobile
-                    keyboardControl: false,
-                    allowTheatre: false,
-                    playbackRateControl: false,
-                    playButtonShowing: false
-                },
-                vastOptions: {
-                    adList: [{ roll: 'preRoll', vastTag: urlVast }]
-                }
-            });
-
-            // Eventos normais do Player
-            meuPlayer.on('vast.adEnd', redirecionarUsuario);
-            meuPlayer.on('vast.adError', redirecionarUsuario); 
-            meuPlayer.on('vast.adSkipped', redirecionarUsuario);
-            
-            // Se o player conseguir começar a rodar o vídeo, podemos limpar a trava ou deixar rodar
-            meuPlayer.on('playing', function() {
-                clearTimeout(travaSeguranca); 
-            });
         }
 
-        function redirecionarUsuario() {
-            if (travaSeguranca) clearTimeout(travaSeguranca);
+        function redirecionar() {
+            clearTimeout(tempoLimite);
             if (linkDestinoAtual) {
                 window.location.href = linkDestinoAtual;
             }
         }
     </script>
+
+</body>
+</html>
