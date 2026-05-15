@@ -1,87 +1,97 @@
-<div id="missao-container" style="width: 100%; max-width: 480px; margin: auto; font-family: sans-serif; border: 1px solid #333; border-radius: 8px; overflow: hidden;">
+<div id="missao-container" style="width: 100%; max-width: 480px; margin: auto; font-family: 'Segoe UI', Roboto, sans-serif; border-radius: 12px; overflow: hidden; background: #0b0b0b; position: relative; border: 1px solid #1a1a1a;">
     
-    <!-- Header -->
-    <div style="display: flex; justify-content: space-between; align-items: center; background: #1a1a1a; color: white; padding: 12px;">
-        <span id="status-text" style="font-size: 13px; color: #ffcc00;">Aguardando o jogo carregar...</span>
-        <b id="timer-display" style="font-size: 18px; color: #ffcc00;">02:00</b>
+    <!-- Barra de Progresso Estilo Play7 (A única indicação de tempo) -->
+    <div style="width: 100%; height: 6px; background: #111; position: relative; z-index: 30;">
+        <div id="progress-bar" style="width: 100%; height: 100%; background: #00ff66; width: 100%; transition: width 1s linear; box-shadow: 0 0 15px rgba(0,255,102,0.5);"></div>
+    </div>
+
+    <!-- Info Bar Minimalista (Sem números) -->
+    <div style="display: flex; justify-content: center; align-items: center; background: #0f0f0f; padding: 6px 15px;">
+        <span id="status-text" style="font-size: 10px; color: #555; font-weight: bold; text-transform: uppercase; letter-spacing: 2px;">Processando Recompensa...</span>
     </div>
 
     <!-- Área do Jogo -->
     <div id="game-area" style="position: relative; width: 100%; padding-top: 66.66%; background: #000;">
         
-        <!-- Overlay Inicial -->
-        <div id="game-overlay" style="position: absolute; top:0; left:0; width:100%; height:100%; background: #000; z-index: 20; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-            <button id="btn-start" onclick="prepararJogo()" style="background: #e62117; color: white; border: none; padding: 15px 30px; border-radius: 50px; font-weight: bold; font-size: 18px; cursor: pointer;">
+        <!-- Overlay de Início -->
+        <div id="game-overlay" style="position: absolute; top:0; left:0; width:100%; height:100%; background: #000; z-index: 20; display: flex; align-items: center; justify-content: center;">
+            <button id="btn-start" onclick="prepararJogo()" style="background: #00ff66; color: #000; border: none; padding: 14px 30px; border-radius: 8px; font-weight: 800; cursor: pointer; text-transform: uppercase;">
                 JOGAR AGORA
             </button>
         </div>
 
-        <!-- Iframe -->
-        <iframe id="iframe-game" 
-            style="position: absolute; top:0; left:0; width:100%; height:100%; border: none;" 
-            src="" 
-            allow="autoplay; gamepad">
-        </iframe>
+        <iframe id="iframe-game" style="position: absolute; top:0; left:0; width:100%; height:100%; border: none;" src="" allow="autoplay; gamepad"></iframe>
+    </div>
+
+    <!-- MODAL DE SUCESSO -->
+    <div id="modal-ganhou" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 100; flex-direction: column; align-items: center; justify-content: center; text-align: center; animation: fadeIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+        <div style="background: #111; border: 2px solid #00ff66; border-radius: 20px; padding: 30px; width: 80%; box-shadow: 0 0 40px rgba(0,255,102,0.15);">
+            <div style="font-size: 60px; margin-bottom: 15px;">🚀</div>
+            <h2 style="color: #fff; margin: 0; font-size: 22px; letter-spacing: -0.5px;">Missão Completa!</h2>
+            <p style="color: #00ff66; font-weight: 600; font-size: 14px; margin: 10px 0 25px;">Seu saldo foi atualizado com sucesso.</p>
+            <button onclick="location.reload()" style="background: #00ff66; color: #000; border: none; padding: 15px 25px; border-radius: 12px; font-weight: 900; cursor: pointer; width: 100%; text-transform: uppercase; letter-spacing: 1px;">COLETAR RECOMPENSA</button>
+        </div>
     </div>
 </div>
 
+<style>
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    #btn-start:active { transform: scale(0.95); }
+</style>
+
 <script>
-    let tempo = 120;
+    const TEMPO_TOTAL = 120; // 2 minutos
+    let tempoRestante = TEMPO_TOTAL;
     let jogoCarregado = false;
     let cronometroRodando = false;
     let intervalo;
 
     const statusTxt = document.getElementById('status-text');
-    const timerTxt = document.getElementById('timer-display');
+    const progressBar = document.getElementById('progress-bar');
     const iframe = document.getElementById('iframe-game');
     const overlay = document.getElementById('game-overlay');
+    const modal = document.getElementById('modal-ganhou');
 
-    // Função 1: Carrega o Iframe mas NÃO inicia o tempo
     function prepararJogo() {
-        overlay.style.background = "rgba(0,0,0,0.7)";
+        overlay.style.background = "rgba(0,0,0,0.9)";
         document.getElementById('btn-start').innerText = "CARREGANDO...";
-        document.getElementById('btn-start').disabled = true;
-
         iframe.src = "https://play.gamepix.com/war-the-knights/embed?sid=77720";
         
-        // Detecta quando o Iframe terminou de carregar o código base
         iframe.onload = function() {
             jogoCarregado = true;
             statusTxt.innerText = "Toque no jogo para validar!";
-            overlay.style.display = 'none'; // Remove o bloqueio visual
+            overlay.style.display = 'none';
         };
     }
 
-    // Função 2: Inicia o cronômetro apenas quando o site perde o foco (toque no iframe)
     window.addEventListener('blur', function() {
         if (jogoCarregado && !cronometroRodando) {
-            iniciarContagemReal();
+            cronometroRodando = true;
+            statusTxt.innerText = "Validando sua atividade...";
+            statusTxt.style.color = "#00ff66";
+
+            intervalo = setInterval(() => {
+                if (!document.hidden) {
+                    tempoRestante--;
+                    
+                    // A única coisa que o usuário vê é a barra diminuindo
+                    let porcentagem = (tempoRestante / TEMPO_TOTAL) * 100;
+                    progressBar.style.width = porcentagem + "%";
+
+                    if (tempoRestante <= 0) {
+                        clearInterval(intervalo);
+                        progressBar.style.width = "0%";
+                        exibirSucesso();
+                    }
+                } else {
+                    statusTxt.innerText = "PAUSADO: Volte para o jogo!";
+                    statusTxt.style.color = "#ff4444";
+                }
+            }, 1000);
         }
     });
 
-    function iniciarContagemReal() {
-        cronometroRodando = true;
-        statusTxt.innerText = "Missão em andamento...";
-        statusTxt.style.color = "#00ff00";
-
-        intervalo = setInterval(() => {
-            // Só diminui se a aba estiver aberta e ativa
-            if (!document.hidden) {
-                tempo--;
-                
-                let m = Math.floor(tempo / 60);
-                let s = tempo % 60;
-                timerTxt.innerText = (m < 10 ? '0'+m : m) + ":" + (s < 10 ? '0'+s : s);
-
-                if (tempo <= 0) {
-                    clearInterval(intervalo);
-                    alert("MISSÃO CONCLUÍDA! Você já pode coletar sua recompensa.");
-                    // Aqui você faz a chamada para o seu banco de dados
-                }
-            } else {
-                statusTxt.innerText = "PAUSADO: Volte para o jogo!";
-                statusTxt.style.color = "#ff4444";
-            }
-        }, 1000);
+    function exibirSucesso() {
+        modal.style.display = 'flex';
     }
 </script>
