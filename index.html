@@ -1,163 +1,65 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel de Missões Extendido</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
+    <script>
+        const urlVast = "https://funny-tooth.com";
+        let linkDestinoAtual = "";
+        let meuPlayer = null;
+        let travaSeguranca = null;
+
+        // Executa a ação ao clicar em qualquer botão de missão
+        document.querySelectorAll('.botao-missao').forEach(botao => {
+            botao.addEventListener('click', function() {
+                linkDestinoAtual = this.getAttribute('data-destino');
+                abrirAnuncioEViajar();
+            });
+        });
+
+        function abrirAnuncioEViajar() {
+            // Exibe a tela preta de bloqueio
+            document.getElementById('bloqueio-anuncio').style.display = 'flex';
+
+            // Limpa travas anteriores se houver
+            if (travaSeguranca) clearTimeout(travaSeguranca);
+
+            // TRAVA DE SEGURANÇA: Se o anúncio não carregar em 3 segundos, redireciona de qualquer forma
+            travaSeguranca = setTimeout(function() {
+                console.log("Anúncio demorou para responder. Redirecionando por segurança...");
+                redirecionarUsuario();
+            }, 3000);
+
+            // Se o player já existia de um clique anterior, destrói para resetar
+            if (meuPlayer) {
+                try { meuPlayer.destroy(); } catch(e) {}
+            }
+
+            // Inicializa o player de vídeo dinamicamente
+            meuPlayer = fluidPlayer('player_vast', {
+                layoutControls: {
+                    autoPlay: true,
+                    mute: true, // Forçar 'true' ajuda a ignorar bloqueios estritos de navegadores mobile
+                    keyboardControl: false,
+                    allowTheatre: false,
+                    playbackRateControl: false,
+                    playButtonShowing: false
+                },
+                vastOptions: {
+                    adList: [{ roll: 'preRoll', vastTag: urlVast }]
+                }
+            });
+
+            // Eventos normais do Player
+            meuPlayer.on('vast.adEnd', redirecionarUsuario);
+            meuPlayer.on('vast.adError', redirecionarUsuario); 
+            meuPlayer.on('vast.adSkipped', redirecionarUsuario);
+            
+            // Se o player conseguir começar a rodar o vídeo, podemos limpar a trava ou deixar rodar
+            meuPlayer.on('playing', function() {
+                clearTimeout(travaSeguranca); 
+            });
         }
 
-        h1 {
-            color: #333;
-            margin-bottom: 20px;
+        function redirecionarUsuario() {
+            if (travaSeguranca) clearTimeout(travaSeguranca);
+            if (linkDestinoAtual) {
+                window.location.href = linkDestinoAtual;
+            }
         }
-
-        .layout-vertical {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            max-width: 500px;
-            gap: 12px;
-        }
-
-        .botao-missao {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 18px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            transition: background-color 0.2s, transform 0.1s;
-            text-align: center;
-            width: 100%;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        .botao-missao:hover {
-            background-color: #0056b3;
-            transform: translateY(-1px);
-        }
-
-        .botao-missao:active {
-            transform: translateY(0);
-        }
-
-        .container-anuncio {
-            margin: 15px 0;
-            padding: 10px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            min-height: 50px;
-            width: 100%;
-            text-align: center;
-            box-sizing: border-box;
-        }
-    </style>
-</head>
-<body>
-
-    <h1>Missões Sequenciais</h1>
-
-    <div class="layout-vertical">
-        <!-- Bloco 1 -->
-        <button class="botao-missao">Missão 1</button>
-        <button class="botao-missao">Missão 2</button>
-        <button class="botao-missao">Missão 3</button>
-        <button class="botao-missao">Missão 4</button>
-        <button class="botao-missao">Missão 5</button>
-
-        <!-- Anúncio 1 -->
-        <div class="container-anuncio">
-            <p style="font-size: 11px; color: #999; margin: 0 0 5px 0;">Anúncio</p>
-            <script>
-                (function(ykix){
-                var d = document, s = d.createElement('script'), l = d.scripts[d.scripts.length - 1];
-                s.settings = ykix || {};
-                s.src = "\/\/conventionalresponse.com\/bxX\/VLscd.GVla0KYbWZcR\/Qe\/m\/9DudZ-UKlokBP\/Tlc_wgMXjmAj1_N\/z\/c\/tRNczxAmy\/MUDhUP4\/MbQw";
-                s.async = true;
-                s.referrerPolicy = 'no-referrer-when-downgrade';
-                l.parentNode.insertBefore(s, l);
-                })({})
-            </script>
-        </div>
-
-        <!-- Bloco 2 -->
-        <button class="botao-missao">Missão 6</button>
-        <button class="botao-missao">Missão 7</button>
-        <button class="botao-missao">Missão 8</button>
-        <button class="botao-missao">Missão 9</button>
-        <button class="botao-missao">Missão 10</button>
-
-        <!-- Anúncio 2 -->
-        <div class="container-anuncio">
-            <p style="font-size: 11px; color: #999; margin: 0 0 5px 0;">Anúncio</p>
-            <script>
-                (function(ykix){
-                var d = document, s = d.createElement('script'), l = d.scripts[d.scripts.length - 1];
-                s.settings = ykix || {};
-                s.src = "\/\/conventionalresponse.com\/bxX\/VLscd.GVla0KYbWZcR\/Qe\/m\/9DudZ-UKlokBP\/Tlc_wgMXjmAj1_N\/z\/c\/tRNczxAmy\/MUDhUP4\/MbQw";
-                s.async = true;
-                s.referrerPolicy = 'no-referrer-when-downgrade';
-                l.parentNode.insertBefore(s, l);
-                })({})
-            </script>
-        </div>
-
-        <!-- Bloco 3 -->
-        <button class="botao-missao">Missão 11</button>
-        <button class="botao-missao">Missão 12</button>
-        <button class="botao-missao">Missão 13</button>
-        <button class="botao-missao">Missão 14</button>
-        <button class="botao-missao">Missão 15</button>
-
-        <!-- Anúncio 3 -->
-        <div class="container-anuncio">
-            <p style="font-size: 11px; color: #999; margin: 0 0 5px 0;">Anúncio</p>
-            <script>
-                (function(ykix){
-                var d = document, s = d.createElement('script'), l = d.scripts[d.scripts.length - 1];
-                s.settings = ykix || {};
-                s.src = "\/\/conventionalresponse.com\/bxX\/VLscd.GVla0KYbWZcR\/Qe\/m\/9DudZ-UKlokBP\/Tlc_wgMXjmAj1_N\/z\/c\/tRNczxAmy\/MUDhUP4\/MbQw";
-                s.async = true;
-                s.referrerPolicy = 'no-referrer-when-downgrade';
-                l.parentNode.insertBefore(s, l);
-                })({})
-            </script>
-        </div>
-
-        <!-- Bloco 4 -->
-        <button class="botao-missao">Missão 16</button>
-        <button class="botao-missao">Missão 17</button>
-        <button class="botao-missao">Missão 18</button>
-        <button class="botao-missao">Missão 19</button>
-        <button class="botao-missao">Missão 20</button>
-
-        <!-- Anúncio 4 -->
-        <div class="container-anuncio">
-            <p style="font-size: 11px; color: #999; margin: 0 0 5px 0;">Anúncio</p>
-            <script>
-                (function(ykix){
-                var d = document, s = d.createElement('script'), l = d.scripts[d.scripts.length - 1];
-                s.settings = ykix || {};
-                s.src = "\/\/conventionalresponse.com\/bxX\/VLscd.GVla0KYbWZcR\/Qe\/m\/9DudZ-UKlokBP\/Tlc_wgMXjmAj1_N\/z\/c\/tRNczxAmy\/MUDhUP4\/MbQw";
-                s.async = true;
-                s.referrerPolicy = 'no-referrer-when-downgrade';
-                l.parentNode.insertBefore(s, l);
-                })({})
-            </script>
-        </div>
-    </div>
-
-</body>
-</html>
+    </script>
