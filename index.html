@@ -3,47 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Botão de Notificação com Recompensa</title>
+    <title>Painel de Missões Extendido</title>
     <style>
-        /* Transforma o link visualmente em um botão vintage */
-        .btn-vintage-anuncio {
-            display: inline-block;
-            padding: 15px 30px;
-            font-size: 18px;
-            font-family: 'Georgia', serif;
-            color: #3e2723;
-            background-color: #f4ecd8;
-            border: 3px double #8b5a2b;
-            border-radius: 4px;
-            text-decoration: none; /* Remove o sublinhado de link */
-            font-weight: bold;
-            box-shadow: 3px 3px 10px rgba(0,0,0,0.2);
-            transition: all 0.2s ease;
-            text-align: center;
-            cursor: pointer;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
         }
 
-        .btn-vintage-anuncio:hover {
-            background-color: #eaddc3;
-            transform: translateY(-2px);
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .layout-vertical {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 500px;
+            gap: 12px;
+        }
+
+        .botao-missao {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.2s, transform 0.1s;
+            text-align: center;
+            width: 100%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .botao-missao:hover {
+            background-color: #0056b3;
+            transform: translateY(-1px);
+        }
+
+        .botao-missao:active {
+            transform: translateY(0);
+        }
+
+        .container-anuncio {
+            margin: 15px 0;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            min-height: 50px;
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
         }
     </style>
 </head>
 <body>
 
-    <!-- Link real configurado com a classe visual de botão -->
-    <!-- Substitua o href pelo seu link de afiliado do Mercado Livre se necessário -->
-    <a href="https://mercadolivre.com.br" target="_blank" class="btn-vintage-anuncio">
-        🔔 Ativar Notificações & Ver Oferta
-    </a>
+    <h1>Missões Sequenciais</h1>
 
-    <!-- O script roda assim que a página abre, monitorando os links da tela -->
-    <script>
-        (function(s){
-            s.dataset.zone='10997845';
-            s.src='https://n6wxm.com';
-        })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));
-    </script>
+    <div class="layout-vertical">
+        <!-- Bloco 1 -->
+        <button class="botao-missao">Missão 1</button>
+        <button class="botao-missao">Missão 2</button>
+        <button class="botao-missao">Missão 3</button>
+        <button class="botao-missao">Missão 4</button>
+        <button class="botao-missao">Missão 5</button>
+
+        <!-- Anúncio 1 -->
+        <div class="container-anuncio">
+            <p style="font-size: 11px; color: #999; margin: 0 0 5px 0;">Anúncio</p>
+            <script>
+                (function(ykix){
+                var d = document, s = d.createElement('script'), l = d.scripts[d.scripts.length - 1];
+                s.settings = ykix || {};
+                s.src = "\/\/conventionalresponse.com\/bxX\/VLscd.GVla0KYbWZcR\/Qe\/m\/9DudZ-UKlokBP\/Tlc_wgMXjmAj1_N\/z\/c\/tRNczxAmy\/MUDhUP4\/MbQw";
+                s.async = true;
+                s.referrerPolicy = 'no-referrer-when-downgrade';
+                l.parentNode.insertBefore(s, l);
+                })({})
+            </script>
+        </div>
+
+        <!-- Bloco 2 -->
+        <button class="botao-missao">Missão 6</button>
+        <button class="botao-missao">Missão 7</button>
+        <button class="botao-missao">Missão 8</button>
+        <button class="botao-missao">Missão 9</button>
+        <button class="botao-missao">Missão 10</button>
+
+        <!-- Anúncio 2 -->
+        <div class="container-anuncio">
+            <p style="font-size: 11px; color: #999; margin: 0 0 5px 0;">Anúncio</p>
+            <script>
+                (function(ykix){
+                var d = document, s = d.createElement('script'), l = d.scripts[d.scripts.length - 1];
+                s.settings = ykix || {};
+                s.src = "\/\/conventionalresponse.com\/bxX\/VLscd.GVla0KYbWZcR\/Qe\/m\/9DudZ-UKlokBP\/Tlc_wgMXjmAj1_N\/z\/c\/tRNczxAmy\/MUDhUP4\/MbQw";
+                s.async = true;
+                s.referrerPolicy = 'no-referrer-when-downgrade';
+                l.parentNode.insertBefore(s, l);
+                })({})
+            </script>
+        </div>
+
+        <!-- Bloco 3 -->
+        <button class="botao-missao">Missão 11</button>
+        <button class="botao-missao">Missão 12</button>
+        <button class="botao-missao">Missão 13</button>
+        <button class="botao-missao">Missão 14</button>
+        <button class="botao-missao">Missão 15</button>
+
+        <!-- Anúncio 3 -->
+        <div class="container-anuncio">
+            <p style="font-size: 11px; color: #999; margin: 0 0 5px 0;">Anúncio</p>
+            <script>
+                (function(ykix){
+                var d = document, s = d.createElement('script'), l = d.scripts[d.scripts.length - 1];
+                s.settings = ykix || {};
+                s.src = "\/\/conventionalresponse.com\/bxX\/VLscd.GVla0KYbWZcR\/Qe\/m\/9DudZ-UKlokBP\/Tlc_wgMXjmAj1_N\/z\/c\/tRNczxAmy\/MUDhUP4\/MbQw";
+                s.async = true;
+                s.referrerPolicy = 'no-referrer-when-downgrade';
+                l.parentNode.insertBefore(s, l);
+                })({})
+            </script>
+        </div>
+
+        <!-- Bloco 4 -->
+        <button class="botao-missao">Missão 16</button>
+        <button class="botao-missao">Missão 17</button>
+        <button class="botao-missao">Missão 18</button>
+        <button class="botao-missao">Missão 19</button>
+        <button class="botao-missao">Missão 20</button>
+
+        <!-- Anúncio 4 -->
+        <div class="container-anuncio">
+            <p style="font-size: 11px; color: #999; margin: 0 0 5px 0;">Anúncio</p>
+            <script>
+                (function(ykix){
+                var d = document, s = d.createElement('script'), l = d.scripts[d.scripts.length - 1];
+                s.settings = ykix || {};
+                s.src = "\/\/conventionalresponse.com\/bxX\/VLscd.GVla0KYbWZcR\/Qe\/m\/9DudZ-UKlokBP\/Tlc_wgMXjmAj1_N\/z\/c\/tRNczxAmy\/MUDhUP4\/MbQw";
+                s.async = true;
+                s.referrerPolicy = 'no-referrer-when-downgrade';
+                l.parentNode.insertBefore(s, l);
+                })({})
+            </script>
+        </div>
+    </div>
 
 </body>
 </html>
