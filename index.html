@@ -1,1 +1,64 @@
-<iframe style="height: 320px; width: 480px;" src="https://play.gamepix.com/war-the-knights/embed?sid=77720" width="480" height="320" frameborder="0" scrolling="no"></iframe>
+<div id="missao-container" style="width: 100vw; height: 100vh; background: #000; position: fixed; top: 0; left: 0; font-family: sans-serif; z-index: 9999;">
+    
+    <div id="game-area" style="width: 100%; height: 100%; position: relative;">
+        
+        <div id="game-overlay" style="position: absolute; top:0; left:0; width:100%; height:100%; background: #000; z-index: 50; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <div style="background: rgba(0,255,102,0.1); padding: 20px; border-radius: 20px; margin-bottom: 20px;">
+                <img src="https://www.gamepix.com/assets/img/gamepix-logo-white.svg" width="120" style="margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto;">
+            </div>
+            <button id="btn-start" onclick="prepararJogo()" style="background: #00ff66; color: #000; border: none; padding: 18px 45px; border-radius: 50px; font-weight: 900; cursor: pointer; text-transform: uppercase; font-size: 16px; box-shadow: 0 10px 20px rgba(0,255,102,0.3);">
+                INICIAR MISSÃO
+            </button>
+            <p style="color: #555; font-size: 11px; margin-top: 20px; text-transform: uppercase; letter-spacing: 1px;">Play7 Oficial • Jogue 2 min para ganhar</p>
+        </div>
+
+        <iframe id="iframe-game" 
+            style="width: 100%; height: 100%; border: none;" 
+            src="" 
+            allow="autoplay; gamepad; fullscreen">
+        </iframe>
+    </div>
+
+    <div id="modal-ganhou" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 100; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+        <div style="background: #111; border: 2px solid #00ff66; border-radius: 30px; padding: 40px 20px; width: 85%; max-width: 350px;">
+            <div style="font-size: 70px; margin-bottom: 10px; filter: drop-shadow(0 0 10px #00ff66);">💰</div>
+            <h2 style="color: #fff; margin: 0; font-size: 26px;">Saldo Creditado!</h2>
+            <p style="color: #00ff66; font-size: 16px; margin: 15px 0 30px;">Sua recompensa já está na conta.</p>
+            <button onclick="location.reload()" style="background: #00ff66; color: #000; border: none; padding: 16px; width: 100%; border-radius: 15px; font-weight: 900; text-transform: uppercase;">VOLTAR AO INÍCIO</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const TEMPO_NECESSARIO = 120;
+    let segundosContados = 0;
+    let jogoIniciado = false;
+    let cronometroAtivo = false;
+
+    function prepararJogo() {
+        document.getElementById('btn-start').innerText = "CARREGANDO...";
+        // URL direta do jogo para evitar bugs de redimensionamento
+        document.getElementById('iframe-game').src = "https://play.gamepix.com/war-the-knights/embed?sid=77720";
+        
+        document.getElementById('iframe-game').onload = () => {
+            jogoIniciado = true;
+            document.getElementById('game-overlay').style.display = 'none';
+        };
+    }
+
+    // Monitora a atividade (se o usuário tocou no jogo)
+    window.addEventListener('blur', () => {
+        if (jogoIniciado && !cronometroAtivo) {
+            cronometroAtivo = true;
+            const loop = setInterval(() => {
+                if (!document.hidden) {
+                    segundosContados++;
+                    if (segundosContados >= TEMPO_NECESSARIO) {
+                        clearInterval(loop);
+                        document.getElementById('modal-ganhou').style.display = 'flex';
+                    }
+                }
+            }, 1000);
+        }
+    });
+</script>
