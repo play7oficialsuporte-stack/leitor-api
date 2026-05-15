@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel de Missões</title>
+
+    <!-- CÓDIGO VIGNETTE (INTERSTITIAL) INSERIDO EXATAMENTE APÓS O HEAD -->
+    <script>(function(s){s.dataset.zone='10997845',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -54,35 +58,28 @@
     <h1>Missões Disponíveis</h1>
 
     <div class="layout-vertical">
-        <!-- Altere os links de destino finais nos atributos data-destino -->
-        <button class="botao-missao" data-destino="https://youtube.com">Missão 1</button>
-        <button class="botao-missao" data-destino="https://youtube.com">Missão 2</button>
-        <button class="botao-missao" data-destino="https://youtube.com">Missão 3</button>
-        <button class="botao-missao" data-destino="https://youtube.com">Missão 4</button>
-        <button class="botao-missao" data-destino="https://youtube.com">Missão 5</button>
-        <button class="botao-missao" data-destino="https://youtube.com">Missão 6</button>
-        <button class="botao-missao" data-destino="https://youtube.com">Missão 7</button>
-        <button class="botao-missao" data-destino="https://youtube.com">Missão 8</button>
-        <button class="botao-missao" data-destino="https://youtube.com">Missão 9</button>
-        <button class="botao-missao" data-destino="https://youtube.com">Missão 10</button>
+        <!-- Substitua os links abaixo pelos destinos reais do seu canal ou conteúdo -->
+        <button class="botao-missao" onclick="window.location.href='https://youtube.com'">Missão 1</button>
+        <button class="botao-missao" onclick="window.location.href='https://youtube.com'">Missão 2</button>
+        <button class="botao-missao" onclick="window.location.href='https://youtube.com'">Missão 3</button>
+        <button class="botao-missao" onclick="window.location.href='https://youtube.com'">Missão 4</button>
+        <button class="botao-missao" onclick="window.location.href='https://youtube.com'">Missão 5</button>
+        <button class="botao-missao" onclick="window.location.href='https://youtube.com'">Missão 6</button>
+        <button class="botao-missao" onclick="window.location.href='https://youtube.com'">Missão 7</button>
+        <button class="botao-missao" onclick="window.location.href='https://youtube.com'">Missão 8</button>
+        <button class="botao-missao" onclick="window.location.href='https://youtube.com'">Missão 9</button>
+        <button class="botao-missao" onclick="window.location.href='https://youtube.com'">Missão 10</button>
+        <button class="botao-missao" onclick="window.location.href='https://youtube.com'">Missão 11</button>
+        <button class="botao-missao" onclick="window.location.href='https://youtube.com'">Missão 12</button>
+        <button class="botao-missao" onclick="window.location.href='https://youtube.com'">Missão 13</button>
+        <button class="botao-missao" onclick="window.location.href='https://youtube.com'">Missão 14</button>
+        <button class="botao-missao" onclick="window.location.href='https://youtube.com'">Missão 15</button>
+        <button class="botao-missao" onclick="window.location.href='https://youtube.com'">Missão 16</button>
+        <button class="botao-missao" onclick="window.location.href='https://youtube.com'">Missão 17</button>
+        <button class="botao-missao" onclick="window.location.href='https://youtube.com'">Missão 18</button>
+        <button class="botao-missao" onclick="window.location.href='https://youtube.com'">Missão 19</button>
+        <button class="botao-missao" onclick="window.location.href='https://youtube.com'">Missão 20</button>
     </div>
-
-    <script>
-        // Vá no painel da HilltopAds, crie uma zona "Direct Link" (Smartlink) e cole a URL abaixo
-        const urlAnuncioDirectLink = "https://funny-tooth.com";
-
-        document.querySelectorAll('.botao-missao').forEach(botao => {
-            botao.addEventListener('click', function() {
-                const linkDestinoFinal = this.getAttribute('data-destino');
-
-                // 1. Abre o anúncio da HilltopAds em uma nova aba do navegador
-                window.open(urlAnuncioDirectLink, '_blank');
-
-                // 2. Redireciona a página atual imediatamente para o destino (YouTube)
-                window.location.href = linkDestinoFinal;
-            });
-        });
-    </script>
 
 </body>
 </html>
