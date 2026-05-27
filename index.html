@@ -1,280 +1,341 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-<title>YouTube Reward Button</title>
-
-<!-- =========================
-     SCRIPT DO ANÚNCIO
-========================= -->
-<script>
-(function(s){
-    s.dataset.zone='10997845';
-    s.src='https://n6wxm.com/vignette.min.js';
-})
-(
-    [document.documentElement, document.body]
-    .filter(Boolean)
-    .pop()
-    .appendChild(document.createElement('script'))
-);
-</script>
-
-<style>
-
-/* =========================
-   FUNDO
-========================= */
-
-body{
-    margin:0;
-    height:100vh;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
-
-    background:
-    radial-gradient(circle at top,#1f1f1f,#090909);
-
-    font-family:Arial, sans-serif;
-
-    overflow:hidden;
-}
-
-/* =========================
-   CARD
-========================= */
-
-.card{
-
-    width:320px;
-
-    padding:35px 25px;
-
-    border-radius:30px;
-
-    background:rgba(255,255,255,0.06);
-
-    backdrop-filter:blur(12px);
-
-    border:1px solid rgba(255,255,255,0.08);
-
-    box-shadow:
-    0 10px 40px rgba(0,0,0,0.5);
-
-    text-align:center;
-
-    animation:entrada 1s ease;
-}
-
-@keyframes entrada{
-    from{
-        transform:translateY(30px);
-        opacity:0;
-    }
-    to{
-        transform:translateY(0);
-        opacity:1;
-    }
-}
-
-/* =========================
-   TÍTULO
-========================= */
-
-h1{
-    color:white;
-    font-size:28px;
-    margin-bottom:10px;
-}
-
-p{
-    color:#cfcfcf;
-    font-size:15px;
-    line-height:1.5;
-    margin-bottom:30px;
-}
-
-/* =========================
-   BOTÃO
-========================= */
-
-.youtube-btn{
-
-    position:relative;
-
-    width:100%;
-
-    border:none;
-
-    padding:18px;
-
-    border-radius:20px;
-
-    font-size:20px;
-
-    font-weight:bold;
-
-    color:white;
-
-    cursor:pointer;
-
-    overflow:hidden;
-
-    background:
-    linear-gradient(135deg,#ff0000,#ff4d4d);
-
-    box-shadow:
-    0 10px 25px rgba(255,0,0,0.35);
-
-    transition:0.3s;
-}
-
-/* brilho */
-
-.youtube-btn::before{
-
-    content:'';
-
-    position:absolute;
-
-    top:0;
-    left:-120%;
-
-    width:70%;
-    height:100%;
-
-    background:
-    rgba(255,255,255,0.25);
-
-    transform:skewX(-20deg);
-
-    transition:0.6s;
-}
-
-.youtube-btn:hover::before{
-    left:130%;
-}
-
-.youtube-btn:hover{
-    transform:translateY(-3px) scale(1.02);
-}
-
-.youtube-btn:active{
-    transform:scale(0.96);
-}
-
-/* =========================
-   STATUS
-========================= */
-
-.status{
-
-    margin-top:18px;
-
-    color:#00ff9d;
-
-    font-size:14px;
-
-    display:none;
-}
-
-/* =========================
-   LOADING
-========================= */
-
-.loader{
-
-    margin:20px auto 0;
-
-    width:45px;
-    height:45px;
-
-    border:4px solid rgba(255,255,255,0.2);
-
-    border-top:4px solid white;
-
-    border-radius:50%;
-
-    animation:girar 1s linear infinite;
-
-    display:none;
-}
-
-@keyframes girar{
-    to{
-        transform:rotate(360deg);
-    }
-}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Play7 - Vídeo Tarefa #01</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.css" type="text/css"/>
+    
+    <style>
+        /* Estilização Premium Play7 */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Lexend', sans-serif;
+        }
+
+        body {
+            background-color: #0f141c;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            background-color: #181f2a;
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+            position: relative;
+        }
+
+        .header {
+            margin-bottom: 24px;
+        }
+
+        .badge {
+            background-color: rgba(0, 229, 116, 0.1);
+            color: #00e574;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 8px;
+            border-left: 4px solid #00e574; /* Borda Lateral no título */
+            padding-left: 10px;
+            text-align: left;
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            line-height: 1.4;
+            text-align: left;
+            margin-top: 8px;
+        }
+
+        /* Container do Player de Vídeo */
+        .video-wrapper {
+            width: 100%;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 24px;
+            background-color: #0b0e14;
+            border: 2px solid #1e293b;
+        }
+
+        /* Caixa de Instruções Otimizada */
+        .requirements-box {
+            background-color: #111722;
+            border-left: 4px solid #00e574;
+            padding: 16px;
+            border-radius: 0 16px 16px 0;
+            text-align: left;
+            margin-bottom: 24px;
+        }
+
+        .requirements-box h3 {
+            font-size: 0.95rem;
+            color: #00e574;
+            font-weight: 600;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .requirements-box ul {
+            list-style: none;
+        }
+
+        .requirements-box ul li {
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+        }
+
+        .requirements-box ul li::before {
+            content: "•";
+            color: #00e574;
+            font-weight: bold;
+            display: inline-block; 
+            width: 1em;
+            margin-left: 2px;
+        }
+
+        .reward-info {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            border-top: 1px solid #1e293b;
+            padding-top: 16px;
+        }
+
+        /* Modal/Tela de Sucesso e Bloqueio Interno */
+        .overlay-screen {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #181f2a;
+            border-radius: 24px;
+            z-index: 10;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            color: #00e574;
+            margin-bottom: 16px;
+            animation: pop 0.4s ease-in-out;
+        }
+
+        .overlay-screen h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .overlay-screen p {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-bottom: 24px;
+            line-height: 1.4;
+        }
+
+        .home-btn {
+            background-color: #00e574;
+            color: #0f141c;
+            border: none;
+            padding: 14px 32px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0, 229, 116, 0.4);
+            transition: transform 0.2s;
+        }
+
+        .home-btn:active {
+            transform: scale(0.95);
+        }
+
+        @keyframes pop {
+            0% { transform: scale(0); }
+            80% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .meta-info {
+            margin-top: 20px;
+            font-size: 0.75rem;
+            color: #475569;
+            text-align: center;
+            border-top: 1px dashed #1e293b;
+            padding-top: 10px;
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="card">
+    <div class="container">
+        
+        <div id="screen-overlay" class="overlay-screen">
+            <div id="screen-icon" class="success-icon">✓</div>
+            <h2 id="screen-title">Recompensa Resgatada!</h2>
+            <p id="screen-desc">Você completou esta tarefa com sucesso e o saldo já foi adicionado à sua carteira.</p>
+            <a href="index.html" class="home-btn">VOLTAR PARA HOME</a>
+        </div>
 
-    <h1>▶ YouTube Rewards</h1>
+        <div class="header">
+            <span class="badge">Missão do Dia 🔥</span>
+            <h1>Vídeo Tarefa #01</h1>
+            <p class="subtitle">Acompanhe a exibição do conteúdo completo para validar sua participação.</p>
+        </div>
 
-    <p>
-        Clique no botão abaixo para continuar.
-        Um anúncio pode aparecer antes do redirecionamento.
-    </p>
+        <div class="video-wrapper">
+            <video id="player-play7" controls playsinline webkit-playsinline preload="auto">
+                <source src="https://raw.githubusercontent.com/play7oficialsuporte-stack/Teste/main/323468-tiny-2-a3skfvvd_q9EZWRjQ.mp4" type="video/mp4" />
+            </video>
+        </div>
 
-    <button class="youtube-btn" onclick="abrirYoutube()">
+        <div class="requirements-box">
+            <h3>Diretrizes da Tarefa:</h3>
+            <ul>
+                <li>Inicie o reprodutor de mídia tocando no botão Play.</li>
+                <li>Aguarde a estabilização e introdução inicial do sistema.</li>
+                <li>Assista aos 15 segundos completos sem fechar a página.</li>
+            </ul>
+        </div>
 
-        ▶ Abrir YouTube
+        <div class="reward-info">
+            <p>Status: <strong id="status-text">Aguardando início...</strong></p>
+        </div>
 
-    </button>
+        <div class="meta-info">
+            <p>Play7 Security Layer v3.0 | Encrypted Token</p>
+        </div>
 
-    <div class="loader" id="loader"></div>
-
-    <div class="status" id="status">
-        Abrindo anúncio...
     </div>
 
-</div>
+    <script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>
+    
+    <script>
+        // CONFIGURAÇÕES DA MISSÃO
+        const ID_MISSAO = 'missao_01';    // Identificador único desta página
+        const VALOR_RECOMPENSA = 1.00;   // Recompensa em saldo real: R$ 1,00
 
-<script>
+        // 1. VERIFICAÇÃO DE SEGURANÇA: Bloqueia o usuário caso ele já tenha feito a missão antes
+        if (localStorage.getItem(ID_MISSAO) === 'concluido') {
+            exibirTelaBloqueio("Missão Já Realizada!", "Você já completou esta tarefa anteriormente. Cada missão só pode ser feita uma única vez.", "✕", "#ef4444");
+        }
 
-function abrirYoutube(){
+        // Variáveis de fluxo rigorosas
+        var anuncioAtivo = false;
+        var videoPrincipalIniciou = false;
 
-    let status = document.getElementById("status");
-    let loader = document.getElementById("loader");
+        // Inicializa o Fluid Player integrado com a tag VAST da HilltopAds
+        var player = fluidPlayer('player-play7', {
+            layoutControls: {
+                fillToContainer: true,
+                responsive: true,
+                autoPlay: false,
+                preload: 'auto',
+                mute: false,
+                keyboardControl: false,
+                allowDownload: false,
+                playButtonShowing: true
+            },
+            vastOptions: {
+                adList: [{
+                    roll: 'preRoll',   
+                    vastTag: 'https://funny-tooth.com/d.mOF/zKddGPNKvCZAGeUd/FeTmW9VuKZHUXl/kIP/TjchwtMKj-A/1eN/jOkzteN/zSAByvMSDmUo3IM/wX'
+                }]
+            }
+        });
 
-    status.style.display = "block";
-    loader.style.display = "block";
+        // Eventos disparados controlando rigidamente o estado da publicidade VAST
+        player.on('adStart', function() {
+            anuncioAtivo = true;
+            document.getElementById('status-text').innerHTML = "<span style='color: #eab308; font-weight: 600;'>Carregando introdução obrigatória...</span>";
+        });
 
-    // tenta ativar o anúncio
-    try{
+        player.on('play', function() {
+            if (anuncioAtivo) {
+                document.getElementById('status-text').innerHTML = "<span style='color: #eab308; font-weight: 600;'>Assistindo introdução obrigatória...</span>";
+            } else {
+                videoPrincipalIniciou = true;
+                document.getElementById('status-text').innerHTML = "<span style='color: #00e574; font-weight: 600;'>Reproduzindo vídeo de validação...</span>";
+            }
+        });
 
-        let s = document.createElement("script");
+        // Quando o anúncio sai de cena de qualquer maneira (concluído, pulado ou erro de carregamento)
+        function liberarVideoPrincipal() {
+            anuncioAtivo = false;
+            document.getElementById('status-text').innerHTML = "<span style='color: #00e574; font-weight: 600;'>Processando conteúdo principal...</span>";
+        }
 
-        s.src = "https://n6wxm.com/vignette.min.js";
+        player.on('adFinished', function() { liberarVideoPrincipal(); });
+        player.on('adSkipped', function() { liberarVideoPrincipal(); });
+        player.on('adError', function() { liberarVideoPrincipal(); });
 
-        s.dataset.zone = "10997845";
+        // 2. BLOQUEIO ABSOLUTO: Vincula o fim da tarefa EXCLUSIVAMENTE ao elemento de vídeo real do HTML5
+        var videoElementRaw = document.getElementById('player-play7');
+        
+        videoElementRaw.onended = function() {
+            // SEGURANÇA MÁXIMA: Só aceita finalizar se o anúncio já passou E se o vídeo principal rodou de fato
+            if (!anuncioAtivo && videoPrincipalIniciou) {
+                // Salva o status de conclusão permanentemente no navegador do usuário
+                localStorage.setItem(ID_MISSAO, 'concluido');
 
-        document.body.appendChild(s);
+                // Atualiza o saldo em dinheiro armazenado no LocalStorage usando ponto flutuante
+                let saldoAtual = parseFloat(localStorage.getItem('saldo_usuario')) || 0.00;
+                let novoSaldo = saldoAtual + VALOR_RECOMPENSA;
+                localStorage.setItem('saldo_usuario', novoSaldo.toFixed(2)); // Salva com duas casas decimais (ex: 1.00)
 
-    }catch(e){
-        console.log("Erro anúncio");
-    }
+                // Abre a interface de sucesso com animação na tela
+                exibirTelaBloqueio("Recompensa Resgatada!", `Perfeito! Você ganhou R$ ${VALOR_RECOMPENSA.toFixed(2).replace('.', ',')}. Seu saldo já foi atualizado com sucesso.`, "✓", "#00e574");
+            }
+        };
 
-    // redireciona depois
-    setTimeout(()=>{
-
-        window.location.href =
-        "https://youtube.com";
-
-    },3000);
-
-}
-
-</script>
+        // Função interna para renderizar as telas de controle (Sucesso/Bloqueio)
+        function exibirTelaBloqueio(titulo, descricao, icone, corIcone) {
+            document.getElementById('screen-title').innerText = titulo;
+            document.getElementById('screen-desc').innerText = descricao;
+            document.getElementById('screen-icon').innerText = icone;
+            document.getElementById('screen-icon').style.color = corIcone;
+            document.getElementById('screen-overlay').style.display = 'flex';
+        }
+    </script>
 
 </body>
 </html>
