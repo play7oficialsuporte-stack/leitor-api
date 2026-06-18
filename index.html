@@ -16,7 +16,6 @@
             --accent-green: #4caf50;
         }
 
-        /* Reset crucial para evitar ganho de volume */
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
@@ -29,10 +28,18 @@
             justify-content: space-between;
             min-height: 100vh; 
             overflow: hidden;
-            padding: 15px 0;
+            padding: 10px 0;
         }
 
-        /* Container de Cabeçalho Alinhado */
+        /* BANNER TOPO: Acima de tudo */
+        #ad-top-wrapper {
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 5px;
+        }
+
+        /* Container do Cabeçalho: Agora fica abaixo do banner do topo */
         .header-container {
             width: 92vw;
             max-width: 430px;
@@ -45,44 +52,42 @@
             padding-left: 12px; 
             text-transform: uppercase; 
             letter-spacing: 2px; 
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             font-weight: 800;
             text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
 
         #status { 
-            margin-top: 4px; 
-            font-size: 0.9rem; 
+            margin-top: 3px; 
+            font-size: 0.85rem; 
             color: #888; 
             font-weight: 600; 
             letter-spacing: 0.5px;
             text-transform: uppercase;
         }
 
-        /* Estilização Premium dos Banners (Acima e Embaixo) */
-        .ad-container {
+        /* Isolamento Seguro com Iframe para Banners Nativos */
+        .ad-box {
             width: 92vw;
             max-width: 430px;
-            min-height: 65px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            height: 70px;
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(76, 175, 80, 0.15);
             border-radius: 8px;
             position: relative;
             box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* Etiqueta discreta de anúncio profissional */
-        .ad-container::before {
+        .ad-box::before {
             content: 'publicidade';
             position: absolute;
             top: 2px;
             right: 6px;
-            font-size: 0.55rem;
+            font-size: 0.5rem;
             color: rgba(76, 175, 80, 0.4);
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -90,41 +95,44 @@
             pointer-events: none;
         }
 
-        /* Moldura Realista do Tabuleiro */
+        .ad-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: transparent;
+            z-index: 2;
+        }
+
+        /* Tabuleiro */
         .board {
             display: grid; 
             grid-template-columns: repeat(8, 1fr);
             grid-template-rows: repeat(8, 1fr);
-            width: 92vw; max-width: 430px; 
-            height: 92vw; max-height: 430px;
+            width: 92vw; max-width: 420px; 
+            height: 92vw; max-height: 420px;
             border: 10px solid var(--board-border); 
             border-radius: 8px;
             position: relative;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+            margin: 5px 0;
         }
 
         .sq { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; position: relative; }
         .dark { background-color: var(--dark-sq); box-shadow: inset 0 0 12px rgba(0,0,0,0.2); }
         .light { background-color: var(--light-sq); box-shadow: inset 0 0 12px rgba(255,255,255,0.1); }
 
-        /* Peças com efeito 3D realistas */
         .piece {
             width: 84%; height: 84%; border-radius: 50%;
             cursor: pointer; 
             box-shadow: 0 6px 10px rgba(0,0,0,0.7), inset 0 -3px 6px rgba(0,0,0,0.4), inset 0 3px 6px rgba(255,255,255,0.3);
             display: flex; align-items: center; justify-content: center;
-            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s ease;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             z-index: 10;
         }
 
-        /* Toque visual de feedback nas peças do jogador */
         .piece.p1 { background: var(--p1-gradient); border: 1px solid #e5e5e5; }
-        .piece.p1:hover {
-            transform: scale(1.06) translateY(-2px);
-            box-shadow: 0 10px 15px rgba(0,0,0,0.8), inset 0 -3px 6px rgba(0,0,0,0.4), inset 0 3px 6px rgba(255,255,255,0.5);
-        }
-
+        .piece.p1:hover { transform: scale(1.06) translateY(-2px); }
         .piece.p2 { background: var(--p2-gradient); border: 1px solid #1a1a1a; }
 
         .king::after { 
@@ -153,9 +161,7 @@
             border: 2px solid rgba(255,255,255,0.4);
             z-index: 5;
             box-shadow: 0 0 10px var(--accent-green);
-            transition: transform 0.2s;
         }
-        .hint:hover { transform: scale(1.25); background: rgba(76, 175, 80, 0.8); }
 
         .overlay {
             position: fixed; inset: 0;
@@ -169,31 +175,31 @@
             border: none; padding: 14px 36px; 
             color: white; font-weight: 700; border-radius: 6px; 
             cursor: pointer; font-size: 1rem; margin-top: 20px;
-            letter-spacing: 1px;
             box-shadow: 0 5px 15px rgba(76,175,80,0.4);
-            transition: 0.2s ease;
         }
-        button:hover { transform: scale(1.05) translateY(-1px); box-shadow: 0 8px 20px rgba(76,175,80,0.6); }
     </style>
 </head>
 <body>
 
+    <!-- 1. BANNER NATIVO ACIMA DE TUDO -->
+    <div id="ad-top-wrapper">
+        <div class="ad-box" id="box-top"></div>
+    </div>
+
+    <!-- 2. CABEÇALHO -->
     <div class="header-container">
         <h1>Damas Elite: César</h1>
         <div id="status">Sua vez (Brancas)</div>
     </div>
 
-    <!-- BANNER SUPERIOR REFINADO -->
-    <div class="ad-container" id="ad-top"></div>
-
-    <!-- TABULEIRO REALISTA -->
+    <!-- 3. TABULEIRO CENTRAL -->
     <div class="board" id="gameBoard"></div>
 
-    <!-- BANNER INFERIOR REFINADO -->
-    <div class="ad-container" id="ad-bottom"></div>
+    <!-- 4. BANNER NATIVO EMBAIXO DO TABULEIRO -->
+    <div class="ad-box" id="box-bottom"></div>
 
     <div class="overlay" id="endOverlay">
-        <h2 id="winMsg" style="font-size: 2.2rem; margin-bottom: 10px; font-weight: 800; letter-spacing: 1px;"></h2>
+        <h2 id="winMsg" style="font-size: 2.2rem; margin-bottom: 10px; font-weight: 800;"></h2>
         <button onclick="location.reload()">JOGAR NOVAMENTE</button>
     </div>
 
@@ -204,45 +210,64 @@
     let selected = null;
     let validMoves = [];
 
-    // Seus scripts originais da Adsterra permanecem intocados na lógica interna
-    const adScripts = [
-        "\\/\\/conventionalresponse.com\\/b.X\\/V\\/sKdTG-l-0KYfW\\/cN\\/ve\\/mF9AuGZ\\/UplakRPkTlYz5cOFTDI\\/wrOpDkEJt\\/Najtki5dMDj\\/AJ4JNLQa",
-        "\\/\\/conventionalresponse.com\\/baX.VwsVdkGQls0nYbWscR\\/yeIm_9WuYZtU\\/lgkJPvTAYM5FORTRImwrNEjDkXthNwj\\/kF5EM\\/jOAw3PM\\/wI",
-        "\\/\\/conventionalresponse.com\\/b.XsVBspdJGilA0NYkWVcY\\/IeqmD9auHZCU\\/lVkcPQTQYD5QOYTpItwaNlTgcytfN\\/jAk\\/5_MljNAd2ZMXQl",
-        "\\/\\/conventionalresponse.com\\/bWX.VIsVd\\/GDlv0CYVWYcO\\/teSmS9Iu\\/ZzUnlykfPkT\\/Yp5\\/O-TXI\\/wUN\\/DNEgt_Nwj\\/kE5\\/M\\/j\\/AE0RNaQw"
+    // Seus 4 scripts fornecidos, divididos estritamente em pares e isolados
+    const adUrls = [
+        "https://conventionalresponse.com/b.X/V/sKdTG-l-0KYfW/cN/ve/mF9AuGZ/UplakRPkTlYz5cOFTDI/wrOpDkEJt/Najtki5dMDj/AJ4JNLQa",
+        "https://conventionalresponse.com/baX.VwsVdkGQls0nYbWscR/yeIm_9WuYZtU/lgkJPvTAYM5FORTRImwrNEjDkXthNwj/kF5EM/jOAw3PM/wI",
+        "https://conventionalresponse.com/b.XsVBspdJGilA0NYkWVcY/IeqmD9auHZCU/lVkcPQTQYD5QOYTpItwaNlTgcytfN/jAk/5_MljNAd2ZMXQl",
+        "https://conventionalresponse.com/bWX.VIsVd/GDlv0CYVWYcO/teSmS9Iu/ZzUnlykfPkT/Yp5/O-TXI/wUN/DNEgt_Nwj/kE5/M/j/AE0RNaQw"
     ];
 
     let currentPairIndex = 0;
 
+    // Nova Lógica de Injeção Forçada via Document Fragment Iframe
+    function injectIframeAd(containerId, scriptUrl) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = ''; // Limpeza radical da rotação anterior
+
+        const iframe = document.createElement('iframe');
+        iframe.className = 'ad-frame';
+        iframe.scrolling = 'no';
+        container.appendChild(iframe);
+
+        // Escreve o script diretamente dentro do escopo isolado do iframe
+        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+        iframeDoc.open();
+        iframeDoc.write(`
+            <body style="margin:0; padding:0; background:transparent; display:flex; justify-content:center; align-items:center;">
+                <script>
+                    (function(pw){
+                        var d = document,
+                            s = d.createElement('script'),
+                            l = d.scripts[d.scripts.length - 1];
+                        s.settings = pw || {};
+                        s.src = "${scriptUrl}";
+                        s.async = true;
+                        s.referrerPolicy = 'no-referrer-when-downgrade';
+                        l.parentNode.insertBefore(s, l);
+                    })({});
+                <\/script>
+            </body>
+        `);
+        iframeDoc.close();
+    }
+
     function rotateAds() {
-        const topContainer = document.getElementById('ad-top');
-        const bottomContainer = document.getElementById('ad-bottom');
+        let topUrl, bottomUrl;
 
-        topContainer.innerHTML = '';
-        bottomContainer.innerHTML = '';
-
-        let primaryScriptSrc, secondaryScriptSrc;
+        // Garante 2 scripts ativos ao mesmo tempo revezando os pares a cada 1 min
         if (currentPairIndex === 0) {
-            primaryScriptSrc = adScripts[0];
-            secondaryScriptSrc = adScripts[1];
+            topUrl = adUrls[0];
+            bottomUrl = adUrls[1];
             currentPairIndex = 1;
         } else {
-            primaryScriptSrc = adScripts[2];
-            secondaryScriptSrc = adScripts[3];
+            topUrl = adUrls[2];
+            bottomUrl = adUrls[3];
             currentPairIndex = 0;
         }
 
-        const scriptTop = document.createElement('script');
-        scriptTop.async = true;
-        scriptTop.referrerPolicy = 'no-referrer-when-downgrade';
-        scriptTop.src = primaryScriptSrc;
-        topContainer.appendChild(scriptTop);
-
-        const scriptBottom = document.createElement('script');
-        scriptBottom.async = true;
-        scriptBottom.referrerPolicy = 'no-referrer-when-downgrade';
-        scriptBottom.src = secondaryScriptSrc;
-        bottomContainer.appendChild(scriptBottom);
+        injectIframeAd('box-top', topUrl);
+        injectIframeAd('box-bottom', bottomUrl);
     }
 
     function init() {
@@ -250,8 +275,8 @@
         for(let r=0; r<8; r++) {
             for(let c=0; c<8; c++) {
                 if((r+c)%2 !== 0) {
-                    if(r < 3) board[r][c] = 2; // César IA
-                    if(r > 4) board[r][c] = 1; // Jogador Humano
+                    if(r < 3) board[r][c] = 2;
+                    if(r > 4) board[r][c] = 1;
                 }
             }
         }
@@ -259,7 +284,7 @@
         render();
 
         rotateAds();
-        setInterval(rotateAds, 60000); // Executa a troca exata a cada 60 segundos
+        setInterval(rotateAds, 60000); // 1 minuto cravado
     }
 
     function getValidMoves(player, b) {
