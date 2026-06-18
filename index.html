@@ -1,341 +1,449 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Play7 - Vídeo Tarefa #01</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.css" type="text/css"/>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Damas Elite - César IA</title>
     <style>
-        /* Estilização Premium Play7 */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Lexend', sans-serif;
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0a0a0a 0%, #161616 100%);
+            --board-border: #1e120a;
+            --dark-sq: #5c3413;
+            --light-sq: #e6caa3;
+            --p1-gradient: radial-gradient(circle at 35% 35%, #ffffff 0%, #cccccc 60%, #999999 100%);
+            --p2-gradient: radial-gradient(circle at 35% 35%, #444444 0%, #222222 60%, #050505 100%);
+            --highlight: rgba(76, 175, 80, 0.5);
+            --accent-green: #4caf50;
         }
+
+        /* Reset crucial para evitar ganho de volume */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            background-color: #0f141c;
-            color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 450px;
-            background-color: #181f2a;
-            border-radius: 24px;
-            padding: 24px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            text-align: center;
-            position: relative;
-        }
-
-        .header {
-            margin-bottom: 24px;
-        }
-
-        .badge {
-            background-color: rgba(0, 229, 116, 0.1);
-            color: #00e574;
-            padding: 6px 16px;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            display: inline-block;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 8px;
-            border-left: 4px solid #00e574; /* Borda Lateral no título */
-            padding-left: 10px;
-            text-align: left;
-        }
-
-        .subtitle {
-            font-size: 0.9rem;
-            color: #94a3b8;
-            line-height: 1.4;
-            text-align: left;
-            margin-top: 8px;
-        }
-
-        /* Container do Player de Vídeo */
-        .video-wrapper {
-            width: 100%;
-            border-radius: 16px;
+            background: var(--bg-gradient);
+            color: white;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: space-between;
+            min-height: 100vh; 
             overflow: hidden;
-            margin-bottom: 24px;
-            background-color: #0b0e14;
-            border: 2px solid #1e293b;
+            padding: 15px 0;
         }
 
-        /* Caixa de Instruções Otimizada */
-        .requirements-box {
-            background-color: #111722;
-            border-left: 4px solid #00e574;
-            padding: 16px;
-            border-radius: 0 16px 16px 0;
+        /* Container de Cabeçalho Alinhado */
+        .header-container {
+            width: 92vw;
+            max-width: 430px;
             text-align: left;
-            margin-bottom: 24px;
+            margin-bottom: 5px;
         }
 
-        .requirements-box h3 {
-            font-size: 0.95rem;
-            color: #00e574;
-            font-weight: 600;
-            margin-bottom: 6px;
-            text-transform: uppercase;
+        h1 { 
+            border-left: 5px solid var(--accent-green); 
+            padding-left: 12px; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            font-size: 1.25rem;
+            font-weight: 800;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        #status { 
+            margin-top: 4px; 
+            font-size: 0.9rem; 
+            color: #888; 
+            font-weight: 600; 
             letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
 
-        .requirements-box ul {
-            list-style: none;
-        }
-
-        .requirements-box ul li {
-            font-size: 0.85rem;
-            color: #cbd5e1;
-            margin-bottom: 6px;
+        /* Estilização Premium dos Banners (Acima e Embaixo) */
+        .ad-container {
+            width: 92vw;
+            max-width: 430px;
+            min-height: 65px;
             display: flex;
-            align-items: center;
-        }
-
-        .requirements-box ul li::before {
-            content: "•";
-            color: #00e574;
-            font-weight: bold;
-            display: inline-block; 
-            width: 1em;
-            margin-left: 2px;
-        }
-
-        .reward-info {
-            font-size: 0.85rem;
-            color: #94a3b8;
-            border-top: 1px solid #1e293b;
-            padding-top: 16px;
-        }
-
-        /* Modal/Tela de Sucesso e Bloqueio Interno */
-        .overlay-screen {
-            display: none;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #181f2a;
-            border-radius: 24px;
-            z-index: 10;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            padding: 30px;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(76, 175, 80, 0.15);
+            border-radius: 8px;
+            position: relative;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+            overflow: hidden;
         }
 
-        .success-icon {
-            font-size: 4rem;
-            color: #00e574;
-            margin-bottom: 16px;
-            animation: pop 0.4s ease-in-out;
+        /* Etiqueta discreta de anúncio profissional */
+        .ad-container::before {
+            content: 'publicidade';
+            position: absolute;
+            top: 2px;
+            right: 6px;
+            font-size: 0.55rem;
+            color: rgba(76, 175, 80, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 1;
+            pointer-events: none;
         }
 
-        .overlay-screen h2 {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 12px;
+        /* Moldura Realista do Tabuleiro */
+        .board {
+            display: grid; 
+            grid-template-columns: repeat(8, 1fr);
+            grid-template-rows: repeat(8, 1fr);
+            width: 92vw; max-width: 430px; 
+            height: 92vw; max-height: 430px;
+            border: 10px solid var(--board-border); 
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05);
         }
 
-        .overlay-screen p {
-            font-size: 0.9rem;
-            color: #94a3b8;
-            margin-bottom: 24px;
-            line-height: 1.4;
+        .sq { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; position: relative; }
+        .dark { background-color: var(--dark-sq); box-shadow: inset 0 0 12px rgba(0,0,0,0.2); }
+        .light { background-color: var(--light-sq); box-shadow: inset 0 0 12px rgba(255,255,255,0.1); }
+
+        /* Peças com efeito 3D realistas */
+        .piece {
+            width: 84%; height: 84%; border-radius: 50%;
+            cursor: pointer; 
+            box-shadow: 0 6px 10px rgba(0,0,0,0.7), inset 0 -3px 6px rgba(0,0,0,0.4), inset 0 3px 6px rgba(255,255,255,0.3);
+            display: flex; align-items: center; justify-content: center;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s ease;
+            position: relative;
+            z-index: 10;
         }
 
-        .home-btn {
-            background-color: #00e574;
-            color: #0f141c;
-            border: none;
-            padding: 14px 32px;
-            font-size: 0.95rem;
-            font-weight: 700;
-            border-radius: 50px;
+        /* Toque visual de feedback nas peças do jogador */
+        .piece.p1 { background: var(--p1-gradient); border: 1px solid #e5e5e5; }
+        .piece.p1:hover {
+            transform: scale(1.06) translateY(-2px);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.8), inset 0 -3px 6px rgba(0,0,0,0.4), inset 0 3px 6px rgba(255,255,255,0.5);
+        }
+
+        .piece.p2 { background: var(--p2-gradient); border: 1px solid #1a1a1a; }
+
+        .king::after { 
+            content: '👑'; 
+            font-size: 1.2rem; 
+            position: absolute;
+            top: 46%; left: 50%;
+            transform: translate(-50%, -50%);
+            line-height: 0; 
+            display: block;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8)) drop-shadow(0 0 4px gold); 
+            pointer-events: none;
+        }
+
+        .must-capture { animation: pulse-glow 1s infinite alternate; }
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 2px #ff3b30, inset 0 -3px 6px rgba(0,0,0,0.4); }
+            100% { box-shadow: 0 0 18px #ff3b30, inset 0 -3px 6px rgba(0,0,0,0.4); border-color: #ff3b30; }
+        }
+
+        .hint { 
+            width: 36%; height: 36%; 
+            background: var(--highlight); 
+            border-radius: 50%; 
             cursor: pointer;
-            text-decoration: none;
-            box-shadow: 0 4px 15px rgba(0, 229, 116, 0.4);
+            border: 2px solid rgba(255,255,255,0.4);
+            z-index: 5;
+            box-shadow: 0 0 10px var(--accent-green);
             transition: transform 0.2s;
         }
+        .hint:hover { transform: scale(1.25); background: rgba(76, 175, 80, 0.8); }
 
-        .home-btn:active {
-            transform: scale(0.95);
+        .overlay {
+            position: fixed; inset: 0;
+            background: rgba(10,10,10,0.96); display: none;
+            flex-direction: column; align-items: center; justify-content: center; z-index: 1000;
+            backdrop-filter: blur(6px);
         }
 
-        @keyframes pop {
-            0% { transform: scale(0); }
-            80% { transform: scale(1.2); }
-            100% { transform: scale(1); }
+        button { 
+            background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%); 
+            border: none; padding: 14px 36px; 
+            color: white; font-weight: 700; border-radius: 6px; 
+            cursor: pointer; font-size: 1rem; margin-top: 20px;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(76,175,80,0.4);
+            transition: 0.2s ease;
         }
-
-        .meta-info {
-            margin-top: 20px;
-            font-size: 0.75rem;
-            color: #475569;
-            text-align: center;
-            border-top: 1px dashed #1e293b;
-            padding-top: 10px;
-        }
+        button:hover { transform: scale(1.05) translateY(-1px); box-shadow: 0 8px 20px rgba(76,175,80,0.6); }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        
-        <div id="screen-overlay" class="overlay-screen">
-            <div id="screen-icon" class="success-icon">✓</div>
-            <h2 id="screen-title">Recompensa Resgatada!</h2>
-            <p id="screen-desc">Você completou esta tarefa com sucesso e o saldo já foi adicionado à sua carteira.</p>
-            <a href="index.html" class="home-btn">VOLTAR PARA HOME</a>
-        </div>
-
-        <div class="header">
-            <span class="badge">Missão do Dia 🔥</span>
-            <h1>Vídeo Tarefa #01</h1>
-            <p class="subtitle">Acompanhe a exibição do conteúdo completo para validar sua participação.</p>
-        </div>
-
-        <div class="video-wrapper">
-            <video id="player-play7" controls playsinline webkit-playsinline preload="auto">
-                <source src="https://raw.githubusercontent.com/play7oficialsuporte-stack/Teste/main/323468-tiny-2-a3skfvvd_q9EZWRjQ.mp4" type="video/mp4" />
-            </video>
-        </div>
-
-        <div class="requirements-box">
-            <h3>Diretrizes da Tarefa:</h3>
-            <ul>
-                <li>Inicie o reprodutor de mídia tocando no botão Play.</li>
-                <li>Aguarde a estabilização e introdução inicial do sistema.</li>
-                <li>Assista aos 15 segundos completos sem fechar a página.</li>
-            </ul>
-        </div>
-
-        <div class="reward-info">
-            <p>Status: <strong id="status-text">Aguardando início...</strong></p>
-        </div>
-
-        <div class="meta-info">
-            <p>Play7 Security Layer v3.0 | Encrypted Token</p>
-        </div>
-
+    <div class="header-container">
+        <h1>Damas Elite: César</h1>
+        <div id="status">Sua vez (Brancas)</div>
     </div>
 
-    <script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>
-    
-    <script>
-        // CONFIGURAÇÕES DA MISSÃO
-        const ID_MISSAO = 'missao_01';    // Identificador único desta página
-        const VALOR_RECOMPENSA = 1.00;   // Recompensa em saldo real: R$ 1,00
+    <!-- BANNER SUPERIOR REFINADO -->
+    <div class="ad-container" id="ad-top"></div>
 
-        // 1. VERIFICAÇÃO DE SEGURANÇA: Bloqueia o usuário caso ele já tenha feito a missão antes
-        if (localStorage.getItem(ID_MISSAO) === 'concluido') {
-            exibirTelaBloqueio("Missão Já Realizada!", "Você já completou esta tarefa anteriormente. Cada missão só pode ser feita uma única vez.", "✕", "#ef4444");
+    <!-- TABULEIRO REALISTA -->
+    <div class="board" id="gameBoard"></div>
+
+    <!-- BANNER INFERIOR REFINADO -->
+    <div class="ad-container" id="ad-bottom"></div>
+
+    <div class="overlay" id="endOverlay">
+        <h2 id="winMsg" style="font-size: 2.2rem; margin-bottom: 10px; font-weight: 800; letter-spacing: 1px;"></h2>
+        <button onclick="location.reload()">JOGAR NOVAMENTE</button>
+    </div>
+
+<script>
+    const boardDiv = document.getElementById('gameBoard');
+    let board = [];
+    let turn = 1; 
+    let selected = null;
+    let validMoves = [];
+
+    // Seus scripts originais da Adsterra permanecem intocados na lógica interna
+    const adScripts = [
+        "\\/\\/conventionalresponse.com\\/b.X\\/V\\/sKdTG-l-0KYfW\\/cN\\/ve\\/mF9AuGZ\\/UplakRPkTlYz5cOFTDI\\/wrOpDkEJt\\/Najtki5dMDj\\/AJ4JNLQa",
+        "\\/\\/conventionalresponse.com\\/baX.VwsVdkGQls0nYbWscR\\/yeIm_9WuYZtU\\/lgkJPvTAYM5FORTRImwrNEjDkXthNwj\\/kF5EM\\/jOAw3PM\\/wI",
+        "\\/\\/conventionalresponse.com\\/b.XsVBspdJGilA0NYkWVcY\\/IeqmD9auHZCU\\/lVkcPQTQYD5QOYTpItwaNlTgcytfN\\/jAk\\/5_MljNAd2ZMXQl",
+        "\\/\\/conventionalresponse.com\\/bWX.VIsVd\\/GDlv0CYVWYcO\\/teSmS9Iu\\/ZzUnlykfPkT\\/Yp5\\/O-TXI\\/wUN\\/DNEgt_Nwj\\/kE5\\/M\\/j\\/AE0RNaQw"
+    ];
+
+    let currentPairIndex = 0;
+
+    function rotateAds() {
+        const topContainer = document.getElementById('ad-top');
+        const bottomContainer = document.getElementById('ad-bottom');
+
+        topContainer.innerHTML = '';
+        bottomContainer.innerHTML = '';
+
+        let primaryScriptSrc, secondaryScriptSrc;
+        if (currentPairIndex === 0) {
+            primaryScriptSrc = adScripts[0];
+            secondaryScriptSrc = adScripts[1];
+            currentPairIndex = 1;
+        } else {
+            primaryScriptSrc = adScripts[2];
+            secondaryScriptSrc = adScripts[3];
+            currentPairIndex = 0;
         }
 
-        // Variáveis de fluxo rigorosas
-        var anuncioAtivo = false;
-        var videoPrincipalIniciou = false;
+        const scriptTop = document.createElement('script');
+        scriptTop.async = true;
+        scriptTop.referrerPolicy = 'no-referrer-when-downgrade';
+        scriptTop.src = primaryScriptSrc;
+        topContainer.appendChild(scriptTop);
 
-        // Inicializa o Fluid Player integrado com a tag VAST da HilltopAds
-        var player = fluidPlayer('player-play7', {
-            layoutControls: {
-                fillToContainer: true,
-                responsive: true,
-                autoPlay: false,
-                preload: 'auto',
-                mute: false,
-                keyboardControl: false,
-                allowDownload: false,
-                playButtonShowing: true
-            },
-            vastOptions: {
-                adList: [{
-                    roll: 'preRoll',   
-                    vastTag: 'https://funny-tooth.com/d.mOF/zKddGPNKvCZAGeUd/FeTmW9VuKZHUXl/kIP/TjchwtMKj-A/1eN/jOkzteN/zSAByvMSDmUo3IM/wX'
-                }]
+        const scriptBottom = document.createElement('script');
+        scriptBottom.async = true;
+        scriptBottom.referrerPolicy = 'no-referrer-when-downgrade';
+        scriptBottom.src = secondaryScriptSrc;
+        bottomContainer.appendChild(scriptBottom);
+    }
+
+    function init() {
+        board = Array(8).fill().map(() => Array(8).fill(0));
+        for(let r=0; r<8; r++) {
+            for(let c=0; c<8; c++) {
+                if((r+c)%2 !== 0) {
+                    if(r < 3) board[r][c] = 2; // César IA
+                    if(r > 4) board[r][c] = 1; // Jogador Humano
+                }
             }
-        });
-
-        // Eventos disparados controlando rigidamente o estado da publicidade VAST
-        player.on('adStart', function() {
-            anuncioAtivo = true;
-            document.getElementById('status-text').innerHTML = "<span style='color: #eab308; font-weight: 600;'>Carregando introdução obrigatória...</span>";
-        });
-
-        player.on('play', function() {
-            if (anuncioAtivo) {
-                document.getElementById('status-text').innerHTML = "<span style='color: #eab308; font-weight: 600;'>Assistindo introdução obrigatória...</span>";
-            } else {
-                videoPrincipalIniciou = true;
-                document.getElementById('status-text').innerHTML = "<span style='color: #00e574; font-weight: 600;'>Reproduzindo vídeo de validação...</span>";
-            }
-        });
-
-        // Quando o anúncio sai de cena de qualquer maneira (concluído, pulado ou erro de carregamento)
-        function liberarVideoPrincipal() {
-            anuncioAtivo = false;
-            document.getElementById('status-text').innerHTML = "<span style='color: #00e574; font-weight: 600;'>Processando conteúdo principal...</span>";
         }
+        updateMoves();
+        render();
 
-        player.on('adFinished', function() { liberarVideoPrincipal(); });
-        player.on('adSkipped', function() { liberarVideoPrincipal(); });
-        player.on('adError', function() { liberarVideoPrincipal(); });
+        rotateAds();
+        setInterval(rotateAds, 60000); // Executa a troca exata a cada 60 segundos
+    }
 
-        // 2. BLOQUEIO ABSOLUTO: Vincula o fim da tarefa EXCLUSIVAMENTE ao elemento de vídeo real do HTML5
-        var videoElementRaw = document.getElementById('player-play7');
+    function getValidMoves(player, b) {
+        let captures = []; let simples = [];
+        for(let r=0; r<8; r++) {
+            for(let c=0; c<8; c++) {
+                if(b[r][c] > 0 && b[r][c] % 2 === player % 2) {
+                    const paths = []; findAllCaptures(r, c, b, [], paths); 
+                    captures.push(...paths);
+                }
+            }
+        }
+        if(captures.length > 0) {
+            let maxC = Math.max(...captures.map(m => m.captured.length));
+            return captures.filter(m => m.captured.length === maxC);
+        }
+        for(let r=0; r<8; r++) {
+            for(let c=0; c<8; c++) {
+                if(b[r][c] > 0 && b[r][c] % 2 === player % 2) simples.push(...findSimples(r, c, b));
+            }
+        }
+        return simples;
+    }
+
+    function findAllCaptures(r, c, b, capturedList, results, originalPos = null) {
+        const piece = b[r][c]; const player = piece % 2 === 0 ? 2 : 1; const isKing = piece > 2;
+        const dirs = [[1,1], [1,-1], [-1,1], [-1,-1]]; let foundAny = false; const startPos = originalPos || {r, c};
         
-        videoElementRaw.onended = function() {
-            // SEGURANÇA MÁXIMA: Só aceita finalizar se o anúncio já passou E se o vídeo principal rodou de fato
-            if (!anuncioAtivo && videoPrincipalIniciou) {
-                // Salva o status de conclusão permanentemente no navegador do usuário
-                localStorage.setItem(ID_MISSAO, 'concluido');
-
-                // Atualiza o saldo em dinheiro armazenado no LocalStorage usando ponto flutuante
-                let saldoAtual = parseFloat(localStorage.getItem('saldo_usuario')) || 0.00;
-                let novoSaldo = saldoAtual + VALOR_RECOMPENSA;
-                localStorage.setItem('saldo_usuario', novoSaldo.toFixed(2)); // Salva com duas casas decimais (ex: 1.00)
-
-                // Abre a interface de sucesso com animação na tela
-                exibirTelaBloqueio("Recompensa Resgatada!", `Perfeito! Você ganhou R$ ${VALOR_RECOMPENSA.toFixed(2).replace('.', ',')}. Seu saldo já foi atualizado com sucesso.`, "✓", "#00e574");
+        dirs.forEach(([dr, dc]) => {
+            let tr = r + dr, tc = c + dc;
+            if(isKing) {
+                while(tr >= 0 && tr < 8 && tc >= 0 && tc < 8 && b[tr][tc] === 0) { tr += dr; tc += dc; }
+                if(tr >= 0 && tr < 8 && tc >= 0 && tc < 8 && b[tr][tc] % 2 !== player % 2 && b[tr][tc] !== 0) {
+                    let nr = tr + dr, nc = tc + dc;
+                    if(nr >= 0 && nr < 8 && nc >= 0 && nc < 8 && b[nr][nc] === 0) {
+                        if(!capturedList.some(p => p.r === tr && p.c === tc)) {
+                            foundAny = true; let nb = b.map(row => [...row]); nb[nr][nc] = piece; nb[r][c] = 0;
+                            findAllCaptures(nr, nc, nb, [...capturedList, {r: tr, c: tc}], results, startPos);
+                        }
+                    }
+                }
+            } else {
+                let nr = r + dr*2, nc = c + dc*2;
+                if(nr >= 0 && nr < 8 && nc >= 0 && nc < 8 && b[nr][nc] === 0 && b[r+dr][c+dc] !== 0 && b[r+dr][c+dc] % 2 !== player % 2) {
+                    if(!capturedList.some(p => p.r === r+dr && p.c === c+dc)) {
+                        foundAny = true; let nb = b.map(row => [...row]); nb[nr][nc] = piece; nb[r][c] = 0;
+                        findAllCaptures(nr, nc, nb, [...capturedList, {r: r+dr, c: c+dc}], results, startPos);
+                    }
+                }
             }
-        };
+        });
+        if(!foundAny && capturedList.length > 0) results.push({ from: startPos, to: {r, c}, captured: capturedList });
+    }
 
-        // Função interna para renderizar as telas de controle (Sucesso/Bloqueio)
-        function exibirTelaBloqueio(titulo, descricao, icone, corIcone) {
-            document.getElementById('screen-title').innerText = titulo;
-            document.getElementById('screen-desc').innerText = descricao;
-            document.getElementById('screen-icon').innerText = icone;
-            document.getElementById('screen-icon').style.color = corIcone;
-            document.getElementById('screen-overlay').style.display = 'flex';
+    function findSimples(r, c, b) {
+        const piece = b[r][c]; const player = piece % 2 === 0 ? 2 : 1; const isKing = piece > 2;
+        const moves = []; 
+        const dirs = isKing ? [[1,1], [1,-1], [-1,1], [-1,-1]] : (player === 1 ? [[-1,1], [-1,-1]] : [[1,1], [1,-1]]);
+        
+        dirs.forEach(([dr, dc]) => {
+            let tr = r + dr, tc = c + dc;
+            if(isKing) { 
+                while(tr >= 0 && tr < 8 && tc >= 0 && tc < 8 && b[tr][tc] === 0) { 
+                    moves.push({ from: {r, c}, to: {r: tr, c: tc}, captured: [] }); 
+                    tr += dr; tc += dc; 
+                } 
+            }
+            else { 
+                if(tr >= 0 && tr < 8 && tc >= 0 && tc < 8 && b[tr][tc] === 0) moves.push({ from: {r, c}, to: {r: tr, c: tc}, captured: [] }); 
+            }
+        });
+        return moves;
+    }
+
+    function aiMove() {
+        const result = minimax(board, 5, -Infinity, Infinity, true);
+        if(result.move) executeMove(result.move);
+    }
+
+    function minimax(b, depth, alpha, beta, isMax) {
+        const moves = getValidMoves(isMax ? 2 : 1, b);
+        if(depth === 0 || moves.length === 0) return { score: evalBoard(b) };
+        let bestMove = null;
+        if(isMax) {
+            let maxVal = -Infinity;
+            for(let m of moves) {
+                let nb = simulate(b, m); let score = minimax(nb, depth-1, alpha, beta, false).score;
+                if(score > maxVal) { maxVal = score; bestMove = m; }
+                alpha = Math.max(alpha, score); if(beta <= alpha) break;
+            }
+            return { score: maxVal, move: bestMove };
+        } else {
+            let minVal = Infinity;
+            for(let m of moves) {
+                let nb = simulate(b, m); let score = minimax(nb, depth-1, alpha, beta, true).score;
+                if(score < minVal) { minVal = score; bestMove = m; }
+                beta = Math.min(beta, score); if(beta <= alpha) break;
+            }
+            return { score: minVal, move: bestMove };
         }
-    </script>
+    }
 
+    function evalBoard(b) {
+        let s = 0;
+        for(let r=0; r<8; r++) { for(let c=0; c<8; c++) {
+            if(b[r][c] === 2) s += 10; if(b[r][c] === 4) s += 28;
+            if(b[r][c] === 1) s -= 10; if(b[r][c] === 3) s -= 28;
+        }} return s;
+    }
+
+    function simulate(b, m) {
+        let nb = b.map(row => [...row]); 
+        nb[m.to.r][m.to.c] = nb[m.from.r][m.from.c]; 
+        nb[m.from.r][m.from.c] = 0;
+        m.captured.forEach(p => nb[p.r][p.c] = 0); 
+        if(nb[m.to.r][m.to.c] === 1 && m.to.r === 0) nb[m.to.r][m.to.c] = 3;
+        if(nb[m.to.r][m.to.c] === 2 && m.to.r === 7) nb[m.to.r][m.to.c] = 4;
+        return nb;
+    }
+
+    function render() {
+        boardDiv.innerHTML = '';
+        const isCaptureState = validMoves.length > 0 && validMoves[0].captured.length > 0;
+        
+        for(let r=0; r<8; r++) {
+            for(let c=0; c<8; c++) {
+                const sq = document.createElement('div');
+                sq.className = `sq ${(r+c)%2===0?'light':'dark'}`;
+                const val = board[r][c];
+                
+                if(val > 0) {
+                    const p = document.createElement('div');
+                    p.className = `piece p${val%2===0?2:1} ${val>2?'king':''}`;
+                    if(selected && selected.r === r && selected.c === c) p.style.transform = "scale(1.08) translateY(-2px)";
+                    if(isCaptureState && validMoves.some(m => m.from.r === r && m.from.c === c)) p.classList.add('must-capture');
+                    p.onclick = () => { if(turn === 1) select(r, c); };
+                    sq.appendChild(p);
+                } else if(selected) {
+                    const move = validMoves.find(m => m.from.r === selected.r && m.from.c === selected.c && m.to.r === r && m.to.c === c);
+                    if(move) {
+                        const h = document.createElement('div'); h.className = 'hint';
+                        h.onclick = () => executeMove(move); sq.appendChild(h);
+                    }
+                }
+                boardDiv.appendChild(sq);
+            }
+        }
+    }
+
+    function select(r, c) { selected = {r, c}; render(); }
+
+    async function executeMove(m) {
+        boardDiv.style.pointerEvents = "none";
+        const pValue = board[m.from.r][m.from.c];
+        
+        board[m.from.r][m.from.c] = 0;
+        m.captured.forEach(p => board[p.r][p.c] = 0);
+        board[m.to.r][m.to.c] = pValue;
+
+        if(board[m.to.r][m.to.c] === 1 && m.to.r === 0) board[m.to.r][m.to.c] = 3;
+        if(board[m.to.r][m.to.c] === 2 && m.to.r === 7) board[m.to.r][m.to.c] = 4;
+
+        selected = null;
+        turn = turn === 1 ? 2 : 1;
+        document.getElementById('status').innerText = turn === 1 ? "Sua vez (Brancas)" : "César está pensando...";
+        
+        render();
+        updateMoves();
+        
+        setTimeout(() => {
+            boardDiv.style.pointerEvents = "auto";
+            if(turn === 2) aiMove();
+        }, 500);
+    }
+
+    function updateMoves() {
+        validMoves = getValidMoves(turn, board);
+        if(validMoves.length === 0) {
+            document.getElementById('endOverlay').style.display = 'flex';
+            document.getElementById('winMsg').innerText = turn === 1 ? "César Venceu!" : "Você Venceu!";
+        }
+    }
+
+    init();
+</script>
 </body>
 </html>
